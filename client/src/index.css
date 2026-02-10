@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Industrial Color Palette */
+  --background: 0 0% 100%;       /* White */
+  --foreground: 0 0% 20%;        /* Charcoal #333 */
+  
+  --primary: 33 100% 50%;        /* Construction Orange #FF8C00 */
+  --primary-foreground: 0 0% 100%; /* White text on orange */
+  
+  --secondary: 0 0% 96%;         /* Light Gray for sections */
+  --secondary-foreground: 0 0% 20%;
+  
+  --muted: 0 0% 90%;
+  --muted-foreground: 0 0% 40%;
+  
+  --accent: 0 0% 20%;            /* Dark charcoal accent */
+  --accent-foreground: 0 0% 100%;
+  
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 0 0% 90%;
+  --input: 0 0% 90%;
+  --ring: 33 100% 50%;
+  
+  --radius: 0.25rem; /* Industrial look prefers sharper or slightly rounded corners */
+}
+
+.dark {
+  /* Optional dark mode support if system pref changes, though design specifies light/charcoal mix */
+  --background: 0 0% 15%;
+  --foreground: 0 0% 95%;
+  --primary: 33 100% 50%;
+  --primary-foreground: 0 0% 100%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase; /* Industrial headers are often caps */
+    letter-spacing: 0.05em;
+  }
+}
+
+/* Custom scrollbar for industrial feel */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FF8C00;
+}
