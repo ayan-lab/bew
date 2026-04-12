@@ -4,6 +4,8 @@ import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 export default defineConfig({
+  // Asset base for the SPA. Keep `/` when the app and `/api` share one origin at the domain root.
+  base: "/",
   plugins: [
     react(),
     runtimeErrorOverlay(),

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Project } from "@shared/schema";
+import { apiUrl } from "@/lib/api";
 
 type Category = "All" | "Construction" | "Fabrication" | "Mechanical";
 
 async function fetchProjects(): Promise<Project[]> {
-  const path = `${import.meta.env.BASE_URL.replace(/\/?$/, "/")}api/projects`;
-  const response = await fetch(path);
+  const response = await fetch(apiUrl("/api/projects"));
   if (!response.ok) {
     throw new Error("Failed to fetch projects");
   }
