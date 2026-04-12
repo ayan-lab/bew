@@ -1,0 +1,5 @@
+# Generate migration from schema diff
+npx drizzle-kit generate
+
+# Apply pending migrations
+npx drizzle-kit migrate

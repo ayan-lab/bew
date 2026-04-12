@@ -2,21 +2,26 @@ import { Shield, Target, Users, Award } from "lucide-react";
 
 export default function About() {
   return (
-    <div className="pt-20">
-      <div className="relative py-24 bg-slate-900 text-white overflow-hidden">
-        {/* Abstract background */}
-        <div className="absolute right-0 top-0 w-1/2 h-full bg-primary/5 -skew-x-12" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="text-5xl font-bold uppercase mb-6 leading-tight">
-              Building Trust Through <span className="text-primary">Excellence</span>
-            </h1>
-            <p className="text-xl text-slate-300 leading-relaxed">
-              Baidya Engineering Works has been a cornerstone of industrial progress since 2005. We combine traditional craftsmanship with modern engineering solutions.
-            </p>
-          </div>
+    <div>
+      {/* Header — full-bleed under fixed navbar (same pattern as Home / Services) */}
+      <section className="relative min-h-[380px] flex items-center justify-center overflow-hidden text-white">
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000"
+            alt="Engineering and fabrication workspace"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-slate-900/75" />
         </div>
-      </div>
+        <div className="container mx-auto px-4 relative z-10 text-center pt-20 pb-20">
+          <h1 className="text-4xl md:text-6xl font-bold uppercase mb-4">
+            Building Trust Through <span className="text-primary">Excellence</span>
+          </h1>
+          <p className="text-slate-300 text-lg max-w-2xl mx-auto">
+            Baidya Engineering Works has been a cornerstone of industrial progress since 2005. We combine traditional craftsmanship with modern engineering solutions.
+          </p>
+        </div>
+      </section>
 
       <div className="container mx-auto px-4 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">

@@ -52,15 +52,15 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="w-5 h-5 text-primary mr-3 mt-1 shrink-0" />
-                <span className="text-sm">123 Industrial Area, Phase II,<br />Steel City, ST 45001</span>
+                <span className="text-sm">Chickrand,<br />West Bengal 712304</span>
               </li>
               <li className="flex items-center">
                 <Phone className="w-5 h-5 text-primary mr-3 shrink-0" />
-                <span className="text-sm">+91 987 654 3210</span>
+                <span className="text-sm">+91 987 475 1736</span>
               </li>
               <li className="flex items-center">
                 <Mail className="w-5 h-5 text-primary mr-3 shrink-0" />
-                <span className="text-sm">info@baidya-engineering.com</span>
+                <span className="text-sm">baidya.engineering@gmail.com</span>
               </li>
             </ul>
           </div>

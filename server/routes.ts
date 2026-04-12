@@ -3,6 +3,9 @@ import type { Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
+import { projects as projectsTable } from "@shared/schema";
+import { db } from "./db";
+
 
 export async function registerRoutes(
   httpServer: Server,
@@ -21,6 +24,16 @@ export async function registerRoutes(
         });
       }
       console.error('Contact submission error:', err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get("/api/projects", async (_req, res) => {
+    try {
+      const rows = await db.select().from(projectsTable);
+      res.status(200).json(rows);
+    } catch (err) {
+      console.error("Projects error:", err);
       res.status(500).json({ message: "Internal server error" });
     }
   });

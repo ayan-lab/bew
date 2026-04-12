@@ -34,13 +34,22 @@ export default function Contact() {
   };
 
   return (
-    <div className="pt-20 bg-slate-50 min-h-screen">
-      <div className="bg-slate-900 py-16 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold uppercase mb-2">Get In Touch</h1>
-          <p className="text-slate-400">We'd love to hear about your project.</p>
+    <div className="bg-slate-50 min-h-screen">
+      {/* Header — full-bleed under fixed navbar (same pattern as Home / Services) */}
+      <section className="relative min-h-[380px] flex items-center justify-center overflow-hidden text-white">
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&q=80&w=2000"
+            alt="Contact and communication"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-slate-900/75" />
         </div>
-      </div>
+        <div className="container mx-auto px-4 relative z-10 text-center pt-20 pb-20">
+          <h1 className="text-4xl md:text-6xl font-bold uppercase mb-4">Get In Touch</h1>
+          <p className="text-slate-300 text-lg max-w-2xl mx-auto">We'd love to hear about your project.</p>
+        </div>
+      </section>
 
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white rounded-xl shadow-xl overflow-hidden border border-slate-100">
@@ -105,7 +114,7 @@ export default function Contact() {
                     <FormItem>
                       <FormLabel className="font-bold text-slate-700">Full Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" className="bg-slate-50 border-slate-200 h-12 focus:border-primary focus:ring-primary/20" {...field} />
+                        <Input placeholder="Full Name" className="bg-slate-50 border-slate-200 h-12 focus:border-primary focus:ring-primary/20" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -120,7 +129,7 @@ export default function Contact() {
                       <FormItem>
                         <FormLabel className="font-bold text-slate-700">Email Address</FormLabel>
                         <FormControl>
-                          <Input placeholder="john@company.com" className="bg-slate-50 border-slate-200 h-12 focus:border-primary focus:ring-primary/20" {...field} />
+                          <Input placeholder="email@example.com" className="bg-slate-50 border-slate-200 h-12 focus:border-primary focus:ring-primary/20" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

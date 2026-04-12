@@ -1,69 +1,49 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Filter } from "lucide-react";
+import { Project } from "@shared/schema";
 
 type Category = "All" | "Construction" | "Fabrication" | "Mechanical";
 
-const projects = [
-  {
-    id: 1,
-    title: "Steel Warehouse Complex",
-    category: "Construction",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1000",
-    status: "Completed"
-  },
-  {
-    id: 2,
-    title: "Heavy Machinery Assembly",
-    category: "Mechanical",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1000",
-    status: "In Progress"
-  },
-  {
-    id: 3,
-    title: "Pipeline Infrastructure",
-    category: "Fabrication",
-    image: "https://images.unsplash.com/photo-1542013936693-884638332954?auto=format&fit=crop&q=80&w=1000",
-    status: "Completed"
-  },
-  {
-    id: 4,
-    title: "Industrial Plant Extension",
-    category: "Construction",
-    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=1000",
-    status: "Completed"
-  },
-  {
-    id: 5,
-    title: "Turbine Maintenance",
-    category: "Mechanical",
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000",
-    status: "In Progress"
-  },
-  {
-    id: 6,
-    title: "Custom Steel Beams",
-    category: "Fabrication",
-    image: "https://images.unsplash.com/photo-1535136894562-55025d57d598?auto=format&fit=crop&q=80&w=1000",
-    status: "Completed"
+async function fetchProjects(): Promise<Project[]> {
+  const path = `${import.meta.env.BASE_URL.replace(/\/?$/, "/")}api/projects`;
+  const response = await fetch(path);
+  if (!response.ok) {
+    throw new Error("Failed to fetch projects");
   }
-];
+  return response.json();
+}
 
 export default function Projects() {
+  const [projects, setProjects] = useState<Project[]>([]);
   const [filter, setFilter] = useState<Category>("All");
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchProjects()
+      .then((data) => {
+        if (!cancelled) setProjects(data);
+      })
+      .catch(() => {
+        if (!cancelled) setProjects([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const filteredProjects = projects.filter(
     (p) => filter === "All" || p.category === filter
   );
 
   return (
-    <div className="pt-20 bg-slate-50 min-h-screen">
-      <div className="bg-slate-900 py-16 text-white mb-12">
-        <div className="container mx-auto px-4 text-center">
+    <div className="bg-slate-50 min-h-screen">
+      {/* Full-bleed under fixed navbar (same pattern as Home / Services) */}
+      <section className="bg-slate-900 text-white mb-12 relative overflow-hidden">
+        <div className="container mx-auto px-4 text-center pt-20 pb-16">
           <h1 className="text-4xl font-bold uppercase mb-2">Our Portfolio</h1>
           <p className="text-slate-400">Showcasing excellence in engineering and construction.</p>
         </div>
-      </div>
+      </section>
 
       <div className="container mx-auto px-4 pb-24">
         {/* Filter Controls */}

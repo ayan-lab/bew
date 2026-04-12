@@ -22,6 +22,7 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
+//Logging function to log messages to the console
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
     hour: "numeric",

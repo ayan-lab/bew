@@ -18,16 +18,22 @@ export default function Services() {
   };
 
   return (
-    <div className="pt-20">
-      {/* Header */}
-      <div className="bg-slate-900 py-20 text-white relative overflow-hidden">
-        {/* abstract engineering bg */}
-        <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1565034946487-077786996e27?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center" />
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold uppercase mb-4">Our Services</h1>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">Comprehensive industrial solutions delivered with precision and expertise.</p>
+    <div>
+      {/* Header — full-bleed under fixed navbar (same pattern as Home) */}
+      <section className="relative min-h-[380px] flex items-center justify-center overflow-hidden text-white">
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1565034946487-077786996e27?auto=format&fit=crop&q=80&w=2000"
+            alt="Industrial engineering abstract"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-slate-900/75" />
         </div>
-      </div>
+        <div className="container mx-auto px-4 relative z-10 text-center pt-20 pb-20">
+          <h1 className="text-4xl md:text-6xl font-bold uppercase mb-4">Our Services</h1>
+          <p className="text-slate-300 text-lg max-w-2xl mx-auto">Comprehensive industrial solutions delivered with precision and expertise.</p>
+        </div>
+      </section>
 
       <div className="container mx-auto px-4 py-24">
         <motion.div 
