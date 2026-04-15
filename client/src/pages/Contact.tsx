@@ -89,7 +89,6 @@ export default function Contact() {
                 <div>
                   <h3 className="font-bold text-lg mb-1">Email Address</h3>
                   <p className="text-slate-400">info@baidya-engineering.com</p>
-                  <p className="text-slate-400">support@baidya-engineering.com</p>
                 </div>
               </div>
             </div>
@@ -97,7 +96,7 @@ export default function Contact() {
             {/* Map Placeholder */}
             <div className="mt-12 h-48 bg-slate-800 rounded opacity-50 relative overflow-hidden">
               <div className="absolute inset-0 flex items-center justify-center text-slate-500 text-sm">
-                [ Interactive Map Would Be Here ]
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14720.962111633418!2d88.25799525638959!3d22.71929962019716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f8846deab6dcef%3A0xdf17d71d0f55819d!2sChikrand%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1776231221801!5m2!1sen!2sin" width="600" height="450" style={{border:0}} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Baidya Engineering Map"></iframe>
               </div>
             </div>
           </div>

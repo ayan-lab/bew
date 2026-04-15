@@ -18,17 +18,18 @@ export default function Projects() {
   const [filter, setFilter] = useState<Category>("All");
 
   useEffect(() => {
-    let cancelled = false;
-    fetchProjects()
-      .then((data) => {
-        if (!cancelled) setProjects(data);
-      })
-      .catch(() => {
-        if (!cancelled) setProjects([]);
-      });
-    return () => {
-      cancelled = true;
-    };
+    // let cancelled = false;
+    // fetchProjects()
+    //   .then((data) => {
+    //     if (!cancelled) setProjects(data);
+    //   })
+    //   .catch(() => {
+    //     if (!cancelled) setProjects([]);
+    //   });
+    // return () => {
+    //   cancelled = true;
+    // };
+    
   }, []);
 
   const filteredProjects = projects.filter(

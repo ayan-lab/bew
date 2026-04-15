@@ -28,11 +28,11 @@ export default function Home() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-3xl"
           >
-            <div className="flex items-center space-x-4 mb-6">
+            {/* <div className="flex items-center space-x-4 mb-6">
               <div className="h-1 w-20 bg-primary" />
               <span className="text-primary font-bold uppercase tracking-widest text-sm">ISO 9001:2015 Certified</span>
             </div>
-            
+             */}
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight uppercase font-display">
               Precision Engineering <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-300">Robust Solutions</span>
