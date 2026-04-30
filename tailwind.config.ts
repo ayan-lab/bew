@@ -10,6 +10,12 @@ export default {
         md: ".375rem", /* 6px */
         sm: ".1875rem", /* 3px */
       },
+      backgroundImage: {
+        "primary-gradient":
+          "linear-gradient(226deg, #E31E26B8 7%, #E31E26 51%)",
+        "primary-gradient-hover":
+          "linear-gradient(226deg, #E31E26E6 7%, #B0151C 58%)",
+      },
       colors: {
         // Flat / base colors (regular buttons)
         background: "hsl(var(--background) / <alpha-value>)",

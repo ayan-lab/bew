@@ -9,8 +9,9 @@
   --background: 0 0% 100%;       /* White */
   --foreground: 0 0% 20%;        /* Charcoal #333 */
   
-  --primary: 33 100% 50%;        /* Construction Orange #FF8C00 */
-  --primary-foreground: 0 0% 100%; /* White text on orange */
+  /* Solid brand red #E31E26 — for text, rings, tints; fills use bg-primary-gradient */
+  --primary: 357 77% 50%;
+  --primary-foreground: 0 0% 100%;
   
   --secondary: 0 0% 96%;         /* Light Gray for sections */
   --secondary-foreground: 0 0% 20%;
@@ -26,7 +27,7 @@
 
   --border: 0 0% 90%;
   --input: 0 0% 90%;
-  --ring: 33 100% 50%;
+  --ring: 357 77% 50%;
   
   --radius: 0.25rem; /* Industrial look prefers sharper or slightly rounded corners */
 }
@@ -35,7 +36,7 @@
   /* Optional dark mode support if system pref changes, though design specifies light/charcoal mix */
   --background: 0 0% 15%;
   --foreground: 0 0% 95%;
-  --primary: 33 100% 50%;
+  --primary: 357 77% 58%;
   --primary-foreground: 0 0% 100%;
 }
 
@@ -67,5 +68,5 @@
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #FF8C00;
+  background: #b0151c;
 }

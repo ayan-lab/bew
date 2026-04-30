@@ -68,10 +68,18 @@ export default function Services() {
           
           <ServiceDetailCard 
             icon={<Settings className="w-12 h-12" />}
-            title="Mechanical Works"
-            description="From complex machinery installation to piping systems, our mechanical engineering team delivers precise and reliable solutions."
-            features={["Machinery Installation", "Industrial Piping", "Hydraulic Systems", "Conveyor Systems"]}
-            image="https://images.unsplash.com/photo-1531297461136-82lw9f22067f?auto=format&fit=crop&q=80&w=1000"
+            title="PEB Works"
+            description="Pre-engineered building (PEB) works are our specialty. We build industrial and commercial buildings using pre-engineered steel components."
+            features={["Pre-engineered Steel Buildings", "Steel Frame Construction", "Roof & Wall Panels", "Custom Design & Fabrication"]}
+            image="https://plus.unsplash.com/premium_photo-1663088543643-2a1ebfc830b6?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzd8fFByZS1lbmdpbmVlcmVkJTIwYnVpbGRpbmd8ZW58MHx8MHx8fDA%3D"
+          />
+
+          <ServiceDetailCard 
+            icon={<Settings className="w-12 h-12" />}
+            title="Industrial Pipeline Fabrication & Erection"
+            description="We fabricate and erect industrial pipelines for various industries, including oil & gas, chemical, and petrochemical sectors."
+            features={["Pipeline Fabrication", "Pipeline Erection", "Pipeline Installation", "Pipeline Maintenance"]}
+            image="https://images.unsplash.com/photo-1673423707246-e8b78e272125?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fEluZHVzdHJpYWwlMjBQaXBlbGluZSUyMEZhYnJpY2F0aW9ufGVufDB8fDB8fHww"
           />
         </motion.div>
       </div>
@@ -81,7 +89,7 @@ export default function Services() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold uppercase text-slate-900 mb-4">Our Process</h2>
-            <div className="w-20 h-1 bg-primary mx-auto" />
+            <div className="w-20 h-1 bg-primary-gradient mx-auto" />
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-center max-w-5xl mx-auto relative">
@@ -124,7 +132,7 @@ function ServiceDetailCard({ icon, title, description, features, image }: any) {
         <ul className="space-y-3">
           {features.map((feat: string, i: number) => (
             <li key={i} className="flex items-center text-sm font-medium text-slate-700">
-              <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3" />
+              <div className="w-1.5 h-1.5 bg-primary-gradient rounded-full mr-3" />
               {feat}
             </li>
           ))}

@@ -80,7 +80,7 @@ export function Footer() {
 
 function SocialIcon({ Icon }: { Icon: any }) {
   return (
-    <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all duration-300">
+    <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary-gradient-hover hover:text-white transition-all duration-300">
       <Icon size={18} />
     </a>
   );

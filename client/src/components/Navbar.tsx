@@ -34,7 +34,7 @@ export function Navbar() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 group">
-            <div className="bg-primary p-2 rounded text-white group-hover:scale-105 transition-transform">
+            <div className="bg-primary-gradient hover:bg-primary-gradient-hover p-2 rounded text-white group-hover:scale-105 transition-[transform,background-image] duration-200">
               <HardHat size={28} />
             </div>
             <div className="flex flex-col">
@@ -70,7 +70,7 @@ export function Navbar() {
               </Link>
             ))}
             <Link href="/contact">
-              <button className="bg-primary hover:bg-orange-600 text-white px-6 py-2 rounded-sm font-bold uppercase text-xs tracking-widest transition-all shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 hover:-translate-y-0.5">
+              <button className="bg-primary-gradient hover:bg-primary-gradient-hover text-white px-6 py-2 rounded-sm font-bold uppercase text-xs tracking-widest transition-[background-image,box-shadow,transform] duration-200 shadow-lg shadow-red-500/25 hover:shadow-red-500/45 hover:-translate-y-0.5">
                 Get a Quote
               </button>
             </Link>
@@ -97,14 +97,14 @@ export function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className={cn(
                   "text-base font-bold uppercase tracking-wider py-2 px-4 rounded-md transition-colors",
-                  location === link.href ? "bg-orange-50 text-primary" : "text-slate-600 hover:bg-gray-50"
+                  location === link.href ? "bg-red-50 text-primary" : "text-slate-600 hover:bg-gray-50"
                 )}
               >
                 {link.label}
               </Link>
             ))}
             <Link href="/contact" onClick={() => setIsOpen(false)}>
-              <button className="w-full bg-primary text-white py-3 rounded-sm font-bold uppercase mt-2">
+              <button className="w-full bg-primary-gradient hover:bg-primary-gradient-hover text-white py-3 rounded-sm font-bold uppercase mt-2 transition-[background-image] duration-200">
                 Get a Quote
               </button>
             </Link>

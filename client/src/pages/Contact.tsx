@@ -10,7 +10,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
-const formSchema = insertContactSchema;
+const formSchema = insertContactSchema.extend({
+  serviceType: z.string().min(1, "Please select a service type"),
+});
 
 export default function Contact() {
   const mutation = useSubmitContact();
@@ -26,7 +28,8 @@ export default function Contact() {
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    mutation.mutate(data, {
+    const { serviceType: _serviceType, ...payload } = data;
+    mutation.mutate(payload, {
       onSuccess: () => {
         form.reset();
       }
@@ -67,7 +70,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">Our Location</h3>
-                  <p className="text-slate-400">123 Industrial Area, Phase II<br />Steel City, ST 45001</p>
+                  <p className="text-slate-400">Chickrand<br />West Bengal 712304</p>
                 </div>
               </div>
 
@@ -77,7 +80,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">Phone Number</h3>
-                  <p className="text-slate-400">+91 987 654 3210</p>
+                  <p className="text-slate-400">+91 987 475 1736</p>
                   <p className="text-slate-500 text-sm mt-1">Mon-Sat: 9am - 6pm</p>
                 </div>
               </div>
@@ -88,7 +91,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">Email Address</h3>
-                  <p className="text-slate-400">info@baidya-engineering.com</p>
+                  <p className="text-slate-400">baidya.engineering@gmail.com</p>
                 </div>
               </div>
             </div>
@@ -120,53 +123,27 @@ export default function Contact() {
                   )}
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="font-bold text-slate-700">Email Address</FormLabel>
-                        <FormControl>
-                          <Input placeholder="email@example.com" className="bg-slate-50 border-slate-200 h-12 focus:border-primary focus:ring-primary/20" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="serviceType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="font-bold text-slate-700">Service Needed</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger className="bg-slate-50 border-slate-200 h-12 focus:border-primary focus:ring-primary/20">
-                              <SelectValue placeholder="Select a service" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="Construction">Construction</SelectItem>
-                            <SelectItem value="Fabrication">Metal Fabrication</SelectItem>
-                            <SelectItem value="Maintenance">Maintenance</SelectItem>
-                            <SelectItem value="Mechanical">Mechanical Works</SelectItem>
-                            <SelectItem value="Other">Other Inquiry</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-bold text-slate-700">Email Address</FormLabel>
+                      <FormControl>
+                        <Input placeholder="email@example.com" className="bg-slate-50 border-slate-200 h-12 focus:border-primary focus:ring-primary/20" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
 
                 <FormField
                   control={form.control}
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-bold text-slate-700">Project Details</FormLabel>
+                      <FormLabel className="font-bold text-slate-700">Message</FormLabel>
                       <FormControl>
                         <Textarea placeholder="Tell us about your requirements..." className="min-h-[150px] bg-slate-50 border-slate-200 focus:border-primary focus:ring-primary/20 resize-none" {...field} />
                       </FormControl>
@@ -178,7 +155,7 @@ export default function Contact() {
                 <Button 
                   type="submit" 
                   disabled={mutation.isPending}
-                  className="w-full h-12 bg-primary hover:bg-orange-600 text-white font-bold uppercase tracking-wider text-sm shadow-lg shadow-orange-500/20"
+                  className="w-full h-12 font-bold uppercase tracking-wider text-sm shadow-lg shadow-red-500/25"
                 >
                   {mutation.isPending ? (
                     <>
