@@ -13,6 +13,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 
 
@@ -225,19 +227,37 @@ export default function ProjectPage() {
           </div>
         </section>
 
-        {/* reviews section */}
-        <section className="py-24 bg-white">
+        <div className="bg-white">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-16 max-w-3xl mx-auto">
-              <button className="bg-slate-100 text-black px-4 py-2 rounded-lg" >
-                <Link href={`/review/create_review/${project.id}`}>
-                  <h4 className="text-2xl font-bold mb-4 text-slate-900 uppercase flex items-center gap-2">
-                    Share Your Experience
-                  </h4>
+            <Separator className="bg-slate-200" />
+          </div>
+        </div>
+
+        {/* reviews section */}
+        <section className="bg-white pb-24 pt-14 md:pt-16">
+          <div className="container mx-auto px-4">
+            <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+              <div>
+                <h2 className="text-2xl font-bold uppercase tracking-tight text-slate-900 md:text-3xl">
+                  Reviews
+                </h2>
+                <div className="mt-2 h-1 w-16 bg-primary-gradient rounded-full" />
+                <p className="mt-3 max-w-xl text-sm text-slate-600 md:text-base">
+                  Feedback from people who worked with us on this project.
+                </p>
+              </div>
+              <Button
+                asChild
+                size="lg"
+                className="w-full shrink-0 rounded-sm border-0 bg-primary-gradient px-8 py-6 text-sm font-bold uppercase tracking-widest text-white shadow-md transition-opacity hover:opacity-90 sm:w-auto"
+              >
+                <Link href={`/review/create_review/${project.id}`} className="inline-flex items-center justify-center gap-2">
+                  Share your experience
+                  <ArrowUpRight className="h-4 w-4" aria-hidden />
                 </Link>
-              </button>
+              </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {reviews.map((review) =>{
                     return (    
                         <div key={review.id} className="flex h-full flex-col rounded-lg border border-slate-200 bg-white p-6 shadow-sm">

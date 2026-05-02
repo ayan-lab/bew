@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1775931510533,
-      "tag": "0000_curious_donald_blake",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1777531056743,
-      "tag": "0001_added_reviewer_table",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1777532521214,
-      "tag": "0002_modified reviewer table",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1777533864930,
-      "tag": "0003_modified projects table",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1777539115917,
-      "tag": "0004_modified projects table",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1777548875410,
-      "tag": "0005_added requested_reviews table",
+      "when": 1777717009573,
+      "tag": "0000_initial_schema",
       "breakpoints": true
     }
   ]

@@ -54,7 +54,7 @@ export default function Home() {
             muted
             loop
             playsInline
-            poster="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=2070"
+            // poster="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=2070"
             className="w-full h-full object-cover"
           >
             <source
