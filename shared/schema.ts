@@ -109,3 +109,8 @@ export type InsertReview = z.infer<typeof insertReviewSchema>;
 export const insertClientSchema = createInsertSchema(client).omit({ id: true, createdAt: true, updatedAt: true });
 export type Client = typeof client.$inferSelect;
 export type InsertClient = z.infer<typeof insertClientSchema>;
+
+
+
+
+
