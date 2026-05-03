@@ -12,17 +12,18 @@ if (process.env.NODE_ENV !== "production") {
   config({ override: false });
 }
 
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL?.trim();
 if (!databaseUrl) {
   throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
+    "DATABASE_URL is missing or empty on this process. On Render: open the **web service** (not only the DB) → Environment → add DATABASE_URL (paste External Database URL from the Postgres instance, or use Link Database). Runtime does not use your local .env file.",
   );
 }
 
 const parsed = parse(databaseUrl);
-if (parsed.host === "base") {
+// pg-connection-string uses host "base" for empty/junk input; empty host is also invalid for TCP.
+if (!parsed.host || parsed.host === "base") {
   throw new Error(
-    'DATABASE_URL parses to host "base" (invalid). Fix the URL on this Render **web** service (Environment → DATABASE_URL), or URL-encode special characters in the password (@ # : etc.). Copy External Database URL from the Postgres instance.',
+    "DATABASE_URL is not a valid Postgres connection URL (host missing or placeholder). Use the full `postgresql://user:pass@host:5432/db` from Render’s Postgres **Connect** tab. If the password contains @ # : encode it in the URL.",
   );
 }
 
