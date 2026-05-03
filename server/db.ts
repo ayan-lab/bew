@@ -6,13 +6,8 @@ import * as schema from "@shared/schema";
 
 const { Pool } = pg;
 
-// Render/production: use only the platform env (Render dashboard / linked DB).
-// Loading .env here can mask misconfiguration; dev uses .env via this or --env-file.
-if (process.env.NODE_ENV !== "production") {
-  config({ override: false });
-}
 
-const databaseUrl = process.env.DATABASE_URL?.trim();
+const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
   throw new Error(
     "DATABASE_URL is missing or empty on this process. On Render: open the **web service** (not only the DB) → Environment → add DATABASE_URL (paste External Database URL from the Postgres instance, or use Link Database). Runtime does not use your local .env file.",
