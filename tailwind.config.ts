@@ -12,9 +12,12 @@ export default {
       },
       backgroundImage: {
         "primary-gradient":
-          "linear-gradient(226deg, #E31E26B8 7%, #E31E26 51%)",
+          "linear-gradient(226deg, rgb(45 212 191 / 0.55) 7%, rgb(13 148 136) 51%)",
         "primary-gradient-hover":
-          "linear-gradient(226deg, #E31E26E6 7%, #B0151C 58%)",
+          "linear-gradient(226deg, rgb(94 234 212 / 0.75) 7%, rgb(15 118 110) 58%)",
+        /** WhatsApp CTA — deep teal → brand green */
+        "whatsapp-cta":
+          "linear-gradient(135deg, #075E54 0%, #128C7E 45%, #25D366 100%)",
       },
       colors: {
         // Flat / base colors (regular buttons)
@@ -102,12 +105,25 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        /** Horizontal shine sweep across CTA (skew keeps a natural glint). */
+        "whatsapp-shine": {
+          "0%": { transform: "translateX(-130%) skewX(-16deg)" },
+          "100%": { transform: "translateX(230%) skewX(-16deg)" },
+        },
+        /** Logo strip: duplicated row translates by half its width for a seamless loop. */
+        scroll: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "whatsapp-shine": "whatsapp-shine 2.8s ease-in-out infinite",
+        scroll: "scroll 35s linear infinite",
       },
     },
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;
+

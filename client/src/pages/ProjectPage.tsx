@@ -206,7 +206,7 @@ export default function ProjectPage() {
                     {project.category}
                   </span>
                   <span className="inline-flex items-center text-sm text-slate-600">
-                    <MapPin className="mr-1.5 h-4 w-4 text-red-500" />
+                    <MapPin className="mr-1.5 h-4 w-4 text-primary" />
                     {project.location}
                   </span>
                 </div>
@@ -215,8 +215,9 @@ export default function ProjectPage() {
                   <p className="text-sm leading-relaxed">
                     <span className="font-semibold text-slate-900">Client :</span> {project.client}
                   </p>
-                  <p className="text-sm leading-relaxed">
-                    <span className="font-semibold text-slate-900">Scope :</span> {project.description}
+                  <p className="text-sm leading-relaxed whitespace-pre-line">
+                    <span className="font-semibold text-slate-900">Scope: </span> 
+                    {project.description}
                   </p>
                   <p className="text-sm leading-relaxed font-semibold text-slate-900">
                     Project Status: {project.status}

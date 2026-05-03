@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { insertContactSchema } from "@shared/schema";
 import { useSubmitContact } from "@/hooks/use-contact";
-import { MapPin, Phone, Mail, Loader2, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Loader2, Send, ExternalLink } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -39,18 +39,10 @@ export default function Contact() {
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* Header — full-bleed under fixed navbar (same pattern as Home / Services) */}
-      <section className="relative min-h-[380px] flex items-center justify-center overflow-hidden text-white">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&q=80&w=2000"
-            alt="Contact and communication"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-slate-900/75" />
-        </div>
-        <div className="container mx-auto px-4 relative z-10 text-center pt-20 pb-20">
-          <h1 className="text-4xl md:text-6xl font-bold uppercase mb-4">Get In Touch</h1>
-          <p className="text-slate-300 text-lg max-w-2xl mx-auto">We'd love to hear about your project.</p>
+      <section className="bg-zinc-950 text-white mb-12 relative overflow-hidden">
+        <div className="container mx-auto px-4 text-center pt-20 pb-16">
+          <h1 className="text-4xl font-bold uppercase mb-4">Get In Touch</h1>
+          <p className="text-slate-400">We'd love to hear about your project.</p>
         </div>
       </section>
 
@@ -58,7 +50,7 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white rounded-xl shadow-xl overflow-hidden border border-slate-100">
           
           {/* Contact Info Side */}
-          <div className="bg-slate-900 p-10 text-white relative overflow-hidden">
+          <div className="bg-zinc-950 p-10 text-white relative overflow-hidden">
             <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-primary/20 rounded-full blur-3xl" />
             
             <h2 className="text-2xl font-bold uppercase mb-8">Contact Information</h2>
@@ -96,10 +88,36 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Map Placeholder */}
-            <div className="mt-12 h-48 bg-slate-800 rounded opacity-50 relative overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center text-slate-500 text-sm">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14720.962111633418!2d88.25799525638959!3d22.71929962019716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f8846deab6dcef%3A0xdf17d71d0f55819d!2sChikrand%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1776231221801!5m2!1sen!2sin" width="600" height="450" style={{border:0}} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Baidya Engineering Map"></iframe>
+            <div className="relative z-10 mt-12">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+                  Find us
+                </h3>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=Chikrand%2C+West+Bengal+712304"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-colors hover:text-white"
+                >
+                  Google Maps
+                  <ExternalLink className="h-3.5 w-3.5 opacity-90" aria-hidden />
+                </a>
+              </div>
+              <div className="relative overflow-hidden rounded-lg border border-white/15 bg-zinc-900/50 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] ring-1 ring-primary/25">
+                <div className="relative aspect-[4/3] w-full min-h-[220px] sm:min-h-[260px]">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14720.962111633418!2d88.25799525638959!3d22.71929962019716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f8846deab6dcef%3A0xdf17d71d0f55819d!2sChikrand%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1776231221801!5m2!1sen!2sin"
+                    title="Baidya Engineering — location map"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                    className="absolute inset-0 h-full w-full border-0"
+                  />
+                </div>
+                <div
+                  className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-inset ring-white/10"
+                  aria-hidden
+                />
               </div>
             </div>
           </div>
@@ -155,7 +173,7 @@ export default function Contact() {
                 <Button 
                   type="submit" 
                   disabled={mutation.isPending}
-                  className="w-full h-12 font-bold uppercase tracking-wider text-sm shadow-lg shadow-red-500/25"
+                  className="w-full h-12 font-bold uppercase tracking-wider text-sm shadow-lg shadow-teal-900/20"
                 >
                   {mutation.isPending ? (
                     <>

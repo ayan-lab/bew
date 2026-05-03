@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { useState, useEffect } from "react";
-import { Menu, X, HardHat } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -10,6 +11,16 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
+
+/** Opens WhatsApp chat (same number as Contact / Footer). */
+const WHATSAPP_CHAT_URL =
+  "https://wa.me/919874751736?text=" +
+  encodeURIComponent("Hi, I'd like to inquire about Baidya Engineering Works.");
+
+/** PNG + preserve alpha so the bar/video shows through non-logo pixels (not flattened to white). */
+const LOGO_URL =
+  // "https://res.cloudinary.com/dqhnt5mus/image/upload/f_png,q_auto,fl_preserve_transparency/v1777806592/logo_i8q8wh.png";
+  "https://res.cloudinary.com/dqhnt5mus/image/upload/f_png,q_auto,fl_preserve_transparency/v1777807947/logo_1_y0ki0y.png";
 
 export function Navbar() {
   const [location] = useLocation();
@@ -33,24 +44,18 @@ export function Navbar() {
     >
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2 group">
-            <div className="bg-primary-gradient hover:bg-primary-gradient-hover p-2 rounded text-white group-hover:scale-105 transition-[transform,background-image] duration-200">
-              <HardHat size={28} />
-            </div>
-            <div className="flex flex-col">
-              <span className={cn(
-                "text-xl font-bold leading-none uppercase font-display tracking-wider",
-                scrolled ? "text-slate-900" : "text-white"
-              )}>
-                Baidya
-              </span>
-              <span className={cn(
-                "text-xs font-medium tracking-[0.2em] opacity-80",
-                scrolled ? "text-slate-600" : "text-slate-200"
-              )}>
-                Engineering Works
-              </span>
-            </div>
+          <Link
+            href="/"
+            className="group flex shrink-0 items-center gap-3 bg-transparent sm:gap-4"
+          >
+            <img
+              src={LOGO_URL}
+              alt="Baidya Engineering Works"
+              className="block h-auto max-h-11 w-[min(92vw,18rem)] shrink-0 bg-transparent object-contain object-left shadow-none ring-0 transition-transform duration-200 group-hover:scale-[1.02] sm:max-h-12 sm:w-[min(90vw,21.5rem)] md:max-h-14 md:w-[26rem] lg:max-h-[4rem] lg:w-[30rem]"
+              width={350}
+              height={106}
+              decoding="async"
+            />
           </Link>
 
           {/* Desktop Nav */}
@@ -69,11 +74,24 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Link href="/contact">
-              <button className="bg-primary-gradient hover:bg-primary-gradient-hover text-white px-6 py-2 rounded-sm font-bold uppercase text-xs tracking-widest transition-[background-image,box-shadow,transform] duration-200 shadow-lg shadow-red-500/25 hover:shadow-red-500/45 hover:-translate-y-0.5">
-                Get a Quote
-              </button>
-            </Link>
+            <a
+              href={WHATSAPP_CHAT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                "relative isolate inline-flex items-center overflow-hidden rounded-sm bg-whatsapp-cta px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-white shadow-md shadow-emerald-950/25 transition-[transform,box-shadow] duration-200 hover:scale-[1.03] hover:shadow-lg hover:shadow-emerald-900/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2",
+                scrolled ? "ring-offset-white" : "ring-offset-zinc-950",
+              )}
+            >
+              <span
+                className="pointer-events-none absolute inset-0 z-0 skew-x-[-16deg] animate-whatsapp-shine bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                aria-hidden
+              />
+              <span className="relative z-10 inline-flex items-center gap-2 drop-shadow-sm">
+                <FaWhatsapp className="h-7 w-7 shrink-0 text-white" aria-hidden />
+                <span className="leading-none">WhatsApp</span>
+              </span>
+            </a>
           </nav>
 
           {/* Mobile Toggle */}
@@ -97,15 +115,34 @@ export function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className={cn(
                   "text-base font-bold uppercase tracking-wider py-2 px-4 rounded-md transition-colors",
-                  location === link.href ? "bg-red-50 text-primary" : "text-slate-600 hover:bg-gray-50"
+                  location === link.href ? "bg-primary/10 text-primary" : "text-slate-600 hover:bg-slate-50"
                 )}
               >
                 {link.label}
               </Link>
             ))}
+            <a
+              href={WHATSAPP_CHAT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
+              className="relative isolate flex w-full items-center justify-center overflow-hidden rounded-sm bg-whatsapp-cta py-3.5 text-sm font-bold uppercase tracking-wider text-white shadow-md shadow-emerald-950/20 transition-[transform,box-shadow] active:scale-[0.99] hover:shadow-lg hover:shadow-emerald-900/25"
+            >
+              <span
+                className="pointer-events-none absolute inset-0 z-0 skew-x-[-16deg] animate-whatsapp-shine bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                aria-hidden
+              />
+              <span className="relative z-10 inline-flex items-center gap-2 drop-shadow-sm">
+                <FaWhatsapp className="h-6 w-6 shrink-0 text-white" aria-hidden />
+                WhatsApp
+              </span>
+            </a>
             <Link href="/contact" onClick={() => setIsOpen(false)}>
-              <button className="w-full bg-primary-gradient hover:bg-primary-gradient-hover text-white py-3 rounded-sm font-bold uppercase mt-2 transition-[background-image] duration-200">
-                Get a Quote
+              <button
+                type="button"
+                className="w-full rounded-sm bg-primary-gradient py-3 text-sm font-bold uppercase tracking-wider text-white transition-[background-image] duration-200 hover:bg-primary-gradient-hover"
+              >
+                Get a quote
               </button>
             </Link>
           </div>

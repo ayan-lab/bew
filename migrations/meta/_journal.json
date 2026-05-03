@@ -8,6 +8,13 @@
       "when": 1777717009573,
       "tag": "0000_initial_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1777815708358,
+      "tag": "0001_uneven_magus",
+      "breakpoints": true
     }
   ]
 }

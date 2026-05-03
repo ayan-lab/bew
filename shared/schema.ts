@@ -27,6 +27,14 @@ export const project = pgTable("projects", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
+export const client = pgTable("clients", {
+  id: serial("id").primaryKey(),
+  uuid: uuid("uuid").notNull().defaultRandom(),
+  name: varchar("name", { length: 100 }).notNull(),
+  image: varchar("image", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
 
 export const user = pgTable("user", {
   id: serial("id").primaryKey(),
@@ -97,3 +105,7 @@ export const insertReviewSchema = createInsertSchema(reviews).omit({
 export type Project = typeof project.$inferSelect;
 export type Review = typeof reviews.$inferSelect;
 export type InsertReview = z.infer<typeof insertReviewSchema>;
+
+export const insertClientSchema = createInsertSchema(client).omit({ id: true, createdAt: true, updatedAt: true });
+export type Client = typeof client.$inferSelect;
+export type InsertClient = z.infer<typeof insertClientSchema>;

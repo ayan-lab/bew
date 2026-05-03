@@ -121,7 +121,7 @@ export const Review = () => {
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      <section className="bg-slate-900 text-white mb-10 relative overflow-hidden">
+      <section className="bg-zinc-950 text-white mb-10 relative overflow-hidden">
         <div className="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.35),transparent_55%)]" />
         <div className="container mx-auto px-4 text-center pt-20 pb-14 relative z-10">
           <h1 className="text-4xl font-bold uppercase mb-2 tracking-tight">Leave a review</h1>

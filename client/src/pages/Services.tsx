@@ -20,18 +20,10 @@ export default function Services() {
   return (
     <div>
       {/* Header — full-bleed under fixed navbar (same pattern as Home) */}
-      <section className="relative min-h-[380px] flex items-center justify-center overflow-hidden text-white">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1565034946487-077786996e27?auto=format&fit=crop&q=80&w=2000"
-            alt="Industrial engineering abstract"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-slate-900/75" />
-        </div>
-        <div className="container mx-auto px-4 relative z-10 text-center pt-20 pb-20">
-          <h1 className="text-4xl md:text-6xl font-bold uppercase mb-4">Our Services</h1>
-          <p className="text-slate-300 text-lg max-w-2xl mx-auto">Comprehensive industrial solutions delivered with precision and expertise.</p>
+      <section className="bg-zinc-950 text-white mb-12 relative overflow-hidden">
+        <div className="container mx-auto px-4 text-center pt-20 pb-16">
+          <h1 className="text-4xl font-bold uppercase mb-2">Our Services</h1>
+          <p className="text-slate-400">Comprehensive industrial solutions delivered with precision and expertise.</p>
         </div>
       </section>
 
@@ -43,18 +35,10 @@ export default function Services() {
           className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12"
         >
           <ServiceDetailCard 
-            icon={<Hammer className="w-12 h-12" />}
-            title="Construction"
-            description="We handle complete structural construction projects for industrial plants, warehouses, and commercial facilities. Our team manages everything from foundation to finishing."
-            features={["Structural Steel Erection", "Foundation Works", "Warehouse Construction", "Site Development"]}
-            image="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80&w=1000"
-          />
-          
-          <ServiceDetailCard 
             icon={<Factory className="w-12 h-12" />}
-            title="Metal Fabrication"
-            description="Our fabrication shop is equipped with advanced machinery to produce custom metal components. We specialize in steel, aluminum, and alloy fabrication."
-            features={["Custom Steel Structures", "CNC Machining", "Sheet Metal Works", "Welding & Assembly"]}
+            title="Industrial Utility Engineering"
+            description="We specialize in the design, installation, and maintenance of industrial utility systems, including electrical, plumbing, and HVAC systems."
+            features={["Electrical Systems", "Plumbing Systems", "HVAC Systems", "Industrial Utility Systems"]}
             image="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=1000"
           />
           
@@ -116,7 +100,7 @@ function ServiceDetailCard({ icon, title, description, features, image }: any) {
   return (
     <motion.div variants={item} className="bg-white rounded-lg overflow-hidden shadow-lg border border-slate-100 group">
       <div className="h-48 overflow-hidden relative">
-        <div className="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors z-10" />
+        <div className="absolute inset-0 bg-zinc-950/25 group-hover:bg-transparent transition-colors z-10" />
         <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
       </div>
       <div className="p-8">
@@ -145,7 +129,7 @@ function ServiceDetailCard({ icon, title, description, features, image }: any) {
 function ProcessStep({ number, title, icon }: any) {
   return (
     <div className="flex flex-col items-center bg-white p-6 rounded-lg shadow-sm w-full md:w-48 my-4 md:my-0 z-10 border border-slate-100">
-      <div className="w-12 h-12 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold text-lg mb-4 shadow-lg shadow-slate-900/20">
+      <div className="w-12 h-12 bg-zinc-950 text-white rounded-full flex items-center justify-center font-bold text-lg mb-4 shadow-lg shadow-black/25 ring-1 ring-zinc-800">
         {number}
       </div>
       <h3 className="font-bold uppercase text-sm">{title}</h3>

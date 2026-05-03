@@ -4,7 +4,7 @@ import multer from "multer";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
-import { project as projectsTable } from "@shared/schema";
+import { project as projectsTable, client as clientsTable } from "@shared/schema";
 import { reviews as reviewsTable } from "@shared/schema";
 import { user as usersTable } from "@shared/schema";
 import { db } from "./db";
@@ -153,6 +153,16 @@ export async function registerRoutes(
     },
   );
 
+  app.get("/api/clients", async (_req, res) => {
+    try {
+      const rows = await db.select().from(clientsTable);
+      res.status(200).json(rows);
+    } catch (err) {
+      console.error("Clients error:", err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   app.get("/api/reviews/:projectId", async (req, res) => {
     const projectId = Number.parseInt(req.params.projectId, 10);
     if (Number.isNaN(projectId)) {
@@ -189,3 +199,4 @@ export async function registerRoutes(
 }
 
 
+  

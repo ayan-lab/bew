@@ -49,7 +49,7 @@ export default function Projects() {
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* Full-bleed under fixed navbar (same pattern as Home / Services) */}
-      <section className="bg-slate-900 text-white mb-12 relative overflow-hidden">
+      <section className="bg-zinc-950 text-white mb-12 relative overflow-hidden">
         <div className="container mx-auto px-4 text-center pt-20 pb-16">
           <h1 className="text-4xl font-bold uppercase mb-2">Our Portfolio</h1>
           <p className="text-slate-400">Showcasing excellence in engineering and construction.</p>
@@ -57,6 +57,22 @@ export default function Projects() {
       </section>
 
       <div className="container mx-auto px-4 pb-24">
+        <motion.p
+          className="mb-8 flex items-center justify-center gap-2 text-center text-xs font-semibold uppercase tracking-[0.2em] text-slate-500"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          <span className="relative flex h-2 w-2 shrink-0" aria-hidden>
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/50" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+          </span>
+          <motion.span
+            animate={{ opacity: [0.45, 1, 0.45] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+          > We are building this website and more projects to be updated soon…
+          </motion.span>
+        </motion.p>
 
         {/* Gallery Grid */}
         <motion.div
