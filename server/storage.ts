@@ -4,7 +4,7 @@ import {
   RequestedReviews,
   type InsertContactSubmission,
   type ContactSubmission,
-} from "@shared/schema";
+} from "./shared/schema";
 
 export interface IStorage {
   createContactSubmission(submission: InsertContactSubmission): Promise<ContactSubmission>;

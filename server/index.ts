@@ -1,6 +1,6 @@
 import express, { type Request, Response, NextFunction } from "express";
+import cors from "cors";
 import { registerRoutes } from "./routes";
-import { serveStatic } from "./static";
 import { createServer } from "http";
 
 const app = express();
@@ -21,6 +21,14 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: false }));
+
+const clientOrigin = process.env.CLIENT_URL ?? "http://localhost:5173";
+app.use(
+  cors({
+    origin: clientOrigin,
+    credentials: true,
+  }),
+);
 
 //Logging function to log messages to the console
 export function log(message: string, source = "express") {
@@ -71,22 +79,8 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (process.env.NODE_ENV === "production") {
-    serveStatic(app);
-  } else {
-    const { setupVite } = await import("./vite");
-    await setupVite(httpServer, app);
-  }
-
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || "5000", 10);
   httpServer.listen(port, "0.0.0.0", () => {
-    log(`serving on port ${port}`);
+    log(`API server listening on port ${port}`);
   });
 })();

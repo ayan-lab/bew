@@ -104,7 +104,7 @@ export default function About() {
           {/* Wrapper to hide overflow */}
           <div className="relative flex overflow-hidden group">
             {/* The Animated Track */}
-            <div className="flex w-max animate-scroll will-change-transform group-hover:[animation-play-state:paused]">
+            <div className="flex w-max animate-scroll will-change-transform">
               {/* Render logos twice for seamless looping */}
               {[...clients, ...clients].map((client, index) => (
                 <div

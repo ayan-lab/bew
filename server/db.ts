@@ -1,13 +1,18 @@
+import { createRequire } from "node:module";
 import { config } from "dotenv";
 import { drizzle } from "drizzle-orm/node-postgres";
-import { parse } from "pg-connection-string";
 import pg from "pg";
-import * as schema from "@shared/schema";
+import * as schema from "./shared/schema";
+
+const require = createRequire(import.meta.url);
+const { parse } = require("pg-connection-string") as typeof import("pg-connection-string");
 
 const { Pool } = pg;
 
+// Fill from .env when missing (local `npm start`). override:false keeps hosted env vars.
+config({ override: false });
 
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL?.trim();
 if (!databaseUrl) {
   throw new Error(
     "DATABASE_URL is missing or empty on this process. On Render: open the **web service** (not only the DB) → Environment → add DATABASE_URL (paste External Database URL from the Postgres instance, or use Link Database). Runtime does not use your local .env file.",
