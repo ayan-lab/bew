@@ -1,4 +1,4 @@
-import type { Project, Review, User } from "@shared/schema";
+import type { Project, Review, User } from "@/types/api";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Link, useRoute } from "wouter";

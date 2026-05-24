@@ -4,7 +4,6 @@ import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 export default defineConfig({
-  // Asset base for the SPA. Keep `/` when the app and `/api` share one origin at the domain root.
   base: "/",
   plugins: [
     react(),
@@ -23,12 +22,13 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "server", "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      "@": path.resolve(import.meta.dirname, "src"),
     },
   },
-  root: path.resolve(import.meta.dirname, "client"),
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
+  },
   server: {
     port: parseInt(process.env.CLIENT_PORT || "5173", 10),
     proxy: {

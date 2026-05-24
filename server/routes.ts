@@ -9,7 +9,7 @@ import { reviews as reviewsTable } from "./shared/schema";
 import { user as usersTable } from "./shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
-import { uploadProfileImage } from "./cloudinary";
+import { uploadProfileImage } from "./cloudinary-upload";
 
 const profileUpload = multer({
   storage: multer.memoryStorage(),

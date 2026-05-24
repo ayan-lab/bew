@@ -1,7 +1,7 @@
 import { Shield, Target, Users, Award } from "lucide-react";
 import { useState, useEffect } from "react";
 import { apiUrl } from "@/lib/api";
-import { type Client } from "@shared/schema";
+import { type Client } from "@/types/api";
 
 export default function About() {
   const [clients, setClients] = useState<Client[]>([]);

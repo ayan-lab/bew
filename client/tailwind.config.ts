@@ -2,25 +2,23 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
+  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       borderRadius: {
-        lg: ".5625rem", /* 9px */
-        md: ".375rem", /* 6px */
-        sm: ".1875rem", /* 3px */
+        lg: ".5625rem",
+        md: ".375rem",
+        sm: ".1875rem",
       },
       backgroundImage: {
         "primary-gradient":
           "linear-gradient(226deg, rgb(45 212 191 / 0.55) 7%, rgb(13 148 136) 51%)",
         "primary-gradient-hover":
           "linear-gradient(226deg, rgb(94 234 212 / 0.75) 7%, rgb(15 118 110) 58%)",
-        /** WhatsApp CTA — deep teal → brand green */
         "whatsapp-cta":
           "linear-gradient(135deg, #075E54 0%, #128C7E 45%, #25D366 100%)",
       },
       colors: {
-        // Flat / base colors (regular buttons)
         background: "hsl(var(--background) / <alpha-value>)",
         foreground: "hsl(var(--foreground) / <alpha-value>)",
         border: "hsl(var(--border) / <alpha-value>)",
@@ -82,7 +80,7 @@ export default {
         "sidebar-accent": {
           DEFAULT: "hsl(var(--sidebar-accent) / <alpha-value>)",
           foreground: "hsl(var(--sidebar-accent-foreground) / <alpha-value>)",
-          border: "var(--sidebar-accent-border)"
+          border: "var(--sidebar-accent-border)",
         },
         status: {
           online: "rgb(34 197 94)",
@@ -105,12 +103,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        /** Horizontal shine sweep across CTA (skew keeps a natural glint). */
         "whatsapp-shine": {
           "0%": { transform: "translateX(-130%) skewX(-16deg)" },
           "100%": { transform: "translateX(230%) skewX(-16deg)" },
         },
-        /** Logo strip: duplicated row translates by half its width for a seamless loop. */
         scroll: {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
@@ -126,4 +122,3 @@ export default {
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;
-

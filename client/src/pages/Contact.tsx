@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { insertContactSchema } from "@shared/schema";
+import { insertContactSchema } from "@/lib/contact-api";
 import { useSubmitContact } from "@/hooks/use-contact";
 import { MapPin, Phone, Mail, Loader2, Send, ExternalLink } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";

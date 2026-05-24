@@ -1,7 +1,6 @@
 import { config } from "dotenv";
 import { defineConfig } from "drizzle-kit";
 
-// Keep false so Render/CI DATABASE_URL is not replaced by a local .env file.
 config({ override: false });
 
 if (!process.env.DATABASE_URL) {
@@ -9,8 +8,8 @@ if (!process.env.DATABASE_URL) {
 }
 
 export default defineConfig({
-  out: "./server/migrations",
-  schema: "./server/shared/schema.ts",
+  out: "./migrations",
+  schema: "./shared/schema.ts",
   dialect: "postgresql",
   dbCredentials: {
     url: process.env.DATABASE_URL,
