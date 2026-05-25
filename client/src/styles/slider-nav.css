@@ -1,0 +1,8 @@
+button.slider-nav-btn {
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+button.slider-nav-btn:hover {
+  border-color: #000 !important;
+  color: #000 !important;
+}

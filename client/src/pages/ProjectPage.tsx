@@ -109,7 +109,7 @@ export default function ProjectPage() {
             <img src={project.image[0]} alt={project.title} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
           </div>
-          <div className="container relative z-10 px-6 pt-32 md:pt-44">
+          <div className="container relative z-10 mx-auto px-6 pb-4">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}

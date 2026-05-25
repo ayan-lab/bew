@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Project-specific review forms (not useful in search results)
+Disallow: /review/

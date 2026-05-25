@@ -48,9 +48,8 @@ export default function Projects() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Full-bleed under fixed navbar (same pattern as Home / Services) */}
-      <section className="bg-zinc-950 text-white mb-12 relative overflow-hidden">
-        <div className="container mx-auto px-4 text-center pt-20 pb-16">
+      <section className="bg-zinc-950 text-white mb-12 overflow-hidden">
+        <div className="container mx-auto px-4 text-center py-16">
           <h1 className="text-4xl font-bold uppercase mb-2">Our Portfolio</h1>
           <p className="text-slate-400">Showcasing excellence in engineering and construction.</p>
         </div>

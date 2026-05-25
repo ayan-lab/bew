@@ -9,8 +9,8 @@
   --background: 210 20% 99%;
   --foreground: 222 47% 11%;
 
-  /* Teal accent — pairs with steel/construction imagery; buttons use bg-primary-gradient */
-  --primary: 173 58% 39%;
+  /* Teal accent — dark enough for 4.5:1 on white (WCAG AA body text) */
+  --primary: 176 72% 27%;
   --primary-foreground: 0 0% 100%;
 
   --secondary: 214 32% 96%;
@@ -27,7 +27,7 @@
 
   --border: 214 24% 88%;
   --input: 214 24% 88%;
-  --ring: 173 58% 39%;
+  --ring: 176 72% 27%;
 
   --radius: 0.25rem;
 }

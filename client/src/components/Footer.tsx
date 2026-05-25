@@ -8,8 +8,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-4">Baidya<span className="text-primary">.</span></h3>
-            <p className="text-sm leading-relaxed text-zinc-500">
+            <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-4">Baidya<span className="text-teal-400">.</span></h3>
+            <p className="text-sm leading-relaxed text-zinc-400">
               Delivering precision engineering and robust construction solutions since 2005. We build the structures that shape tomorrow.
             </p>
             {/* <div className="flex space-x-4 pt-4">
@@ -26,8 +26,8 @@ export function Footer() {
             <ul className="space-y-3">
               {['Home', 'Services', 'Projects', 'About', 'Contact'].map((item) => (
                 <li key={item}>
-                  <Link href={item === 'Home' ? '/' : `/${item.toLowerCase()}`} className="text-sm hover:text-primary transition-colors flex items-center group">
-                    <ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-primary" />
+                  <Link href={item === 'Home' ? '/' : `/${item.toLowerCase()}`} className="text-sm hover:text-teal-400 transition-colors flex items-center group">
+                    <ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-teal-400" />
                     {item}
                   </Link>
                 </li>
@@ -40,15 +40,15 @@ export function Footer() {
             <h4 className="text-white font-bold uppercase tracking-widest mb-6 text-sm">Contact Us</h4>
             <ul className="space-y-4">
               <li className="flex items-start">
-                <MapPin className="w-5 h-5 text-primary mr-3 mt-1 shrink-0" />
+                <MapPin className="w-5 h-5 text-teal-400 mr-3 mt-1 shrink-0" />
                 <span className="text-sm">Chickrand,<br />West Bengal 712304</span>
               </li>
               <li className="flex items-center">
-                <Phone className="w-5 h-5 text-primary mr-3 shrink-0" />
+                <Phone className="w-5 h-5 text-teal-400 mr-3 shrink-0" />
                 <span className="text-sm">+91 987 475 1736</span>
               </li>
               <li className="flex items-center">
-                <Mail className="w-5 h-5 text-primary mr-3 shrink-0" />
+                <Mail className="w-5 h-5 text-teal-400 mr-3 shrink-0" />
                 <span className="text-sm">baidya.engineering@gmail.com</span>
               </li>
             </ul>

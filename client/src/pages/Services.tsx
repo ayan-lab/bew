@@ -19,9 +19,8 @@ export default function Services() {
 
   return (
     <div>
-      {/* Header — full-bleed under fixed navbar (same pattern as Home) */}
-      <section className="bg-zinc-950 text-white mb-12 relative overflow-hidden">
-        <div className="container mx-auto px-4 text-center pt-20 pb-16">
+      <section className="bg-zinc-950 text-white mb-12 overflow-hidden">
+        <div className="container mx-auto px-4 text-center py-16">
           <h1 className="text-4xl font-bold uppercase mb-2">Our Services</h1>
           <p className="text-slate-400">Comprehensive industrial solutions delivered with precision and expertise.</p>
         </div>

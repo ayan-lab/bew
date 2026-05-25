@@ -36,40 +36,37 @@ export function Navbar() {
   }, []);
 
   return (
-    <header 
+    <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled ? "bg-white/95 backdrop-blur-md shadow-md py-2" : "bg-transparent py-4" // navbar colour change 
+        "sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur-md transition-all duration-300",
+        "py-3.5",
+        scrolled && "shadow-md",
       )}
     >
-      <div className="container mx-auto px-4 lg:px-8">
+      <div className="container mx-auto px-4 lg:px-6">
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="group flex shrink-0 items-center gap-3 bg-transparent sm:gap-4"
+            className="group flex shrink-0 items-center gap-2 bg-transparent"
           >
             <img
               src={LOGO_URL}
               alt="Baidya Engineering Works"
-              className="block h-auto max-h-11 w-[min(92vw,18rem)] shrink-0 bg-transparent object-contain object-left shadow-none ring-0 transition-transform duration-200 group-hover:scale-[1.02] sm:max-h-12 sm:w-[min(90vw,21.5rem)] md:max-h-14 md:w-[26rem] lg:max-h-[4rem] lg:w-[30rem]"
-              width={350}
-              height={106}
+              className="block h-auto max-h-9 w-[min(92vw,14rem)] shrink-0 bg-transparent object-contain object-left shadow-none ring-0 transition-transform duration-200 group-hover:scale-[1.02] sm:max-h-10 sm:w-[min(90vw,16rem)] md:max-h-11 md:w-[20rem] lg:max-h-12 lg:w-[22rem]"
+              width={280}
+              height={85}
               decoding="async"
             />
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={cn(
-                  "text-sm font-medium uppercase tracking-widest transition-colors hover:text-primary px-1",
-                  location === link.href 
-                    ? "text-primary border-b-2 border-primary" 
-                    : scrolled ? "text-slate-900" : "text-white"
-                )}
+                aria-current={location === link.href ? "page" : undefined}
+                className="text-xs font-medium uppercase tracking-wide text-slate-900 transition-colors hover:text-primary px-1"
               >
                 {link.label}
               </Link>
@@ -78,28 +75,25 @@ export function Navbar() {
               href={WHATSAPP_CHAT_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(
-                "relative isolate inline-flex items-center overflow-hidden rounded-sm bg-whatsapp-cta px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-white shadow-md shadow-emerald-950/25 transition-[transform,box-shadow] duration-200 hover:scale-[1.03] hover:shadow-lg hover:shadow-emerald-900/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2",
-                scrolled ? "ring-offset-white" : "ring-offset-zinc-950",
-              )}
+              className="relative isolate inline-flex items-center overflow-hidden rounded-sm bg-whatsapp-cta px-3 py-1.5 text-[12px] font-bold uppercase tracking-wide text-white shadow-md shadow-emerald-950/25 transition-[transform,box-shadow] duration-200 hover:scale-[1.03] hover:shadow-lg hover:shadow-emerald-900/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-white"
             >
               <span
                 className="pointer-events-none absolute inset-0 z-0 skew-x-[-16deg] animate-whatsapp-shine bg-gradient-to-r from-transparent via-white/40 to-transparent"
                 aria-hidden
               />
-              <span className="relative z-10 inline-flex items-center gap-2 drop-shadow-sm">
-                <FaWhatsapp className="h-7 w-7 shrink-0 text-white" aria-hidden />
+              <span className="relative z-10 inline-flex items-center gap-1.5 drop-shadow-sm">
+                <FaWhatsapp className="h-5 w-5 shrink-0 text-white" aria-hidden />
                 <span className="leading-none">WhatsApp</span>
               </span>
             </a>
           </nav>
 
           {/* Mobile Toggle */}
-          <button 
-            className={cn("md:hidden p-2", scrolled ? "text-slate-900" : "text-white")}
+          <button
+            className="md:hidden p-1.5 text-slate-900"
             onClick={() => setIsOpen(!isOpen)}
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
@@ -107,16 +101,14 @@ export function Navbar() {
       {/* Mobile Nav */}
       {isOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-100 shadow-xl animate-in slide-in-from-top-5">
-          <div className="flex flex-col p-4 space-y-4">
+          <div className="flex flex-col p-3 space-y-3">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className={cn(
-                  "text-base font-bold uppercase tracking-wider py-2 px-4 rounded-md transition-colors",
-                  location === link.href ? "bg-primary/10 text-primary" : "text-slate-600 hover:bg-slate-50"
-                )}
+                aria-current={location === link.href ? "page" : undefined}
+                className="text-sm font-bold uppercase tracking-wide py-1.5 px-3 rounded-md text-slate-600 transition-colors hover:bg-slate-50"
               >
                 {link.label}
               </Link>
@@ -126,21 +118,21 @@ export function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsOpen(false)}
-              className="relative isolate flex w-full items-center justify-center overflow-hidden rounded-sm bg-whatsapp-cta py-3.5 text-sm font-bold uppercase tracking-wider text-white shadow-md shadow-emerald-950/20 transition-[transform,box-shadow] active:scale-[0.99] hover:shadow-lg hover:shadow-emerald-900/25"
+              className="relative isolate flex w-full items-center justify-center overflow-hidden rounded-sm bg-whatsapp-cta py-2.5 text-[12px] font-bold uppercase tracking-wide text-white shadow-md shadow-emerald-950/20 transition-[transform,box-shadow] active:scale-[0.99] hover:shadow-lg hover:shadow-emerald-900/25"
             >
               <span
                 className="pointer-events-none absolute inset-0 z-0 skew-x-[-16deg] animate-whatsapp-shine bg-gradient-to-r from-transparent via-white/40 to-transparent"
                 aria-hidden
               />
-              <span className="relative z-10 inline-flex items-center gap-2 drop-shadow-sm">
-                <FaWhatsapp className="h-6 w-6 shrink-0 text-white" aria-hidden />
+              <span className="relative z-10 inline-flex items-center gap-1.5 drop-shadow-sm">
+                <FaWhatsapp className="h-5 w-5 shrink-0 text-white" aria-hidden />
                 WhatsApp
               </span>
             </a>
             <Link href="/contact" onClick={() => setIsOpen(false)}>
               <button
                 type="button"
-                className="w-full rounded-sm bg-primary-gradient py-3 text-sm font-bold uppercase tracking-wider text-white transition-[background-image] duration-200 hover:bg-primary-gradient-hover"
+                className="w-full rounded-sm bg-primary-gradient py-2 text-[12px] font-bold uppercase tracking-wide text-white transition-[background-image] duration-200 hover:bg-primary-gradient-hover"
               >
                 Get a quote
               </button>
@@ -148,6 +140,7 @@ export function Navbar() {
           </div>
         </div>
       )}
+      
     </header>
   );
 }

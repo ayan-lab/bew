@@ -1,93 +1,305 @@
-import { motion } from "framer-motion";
-import { ArrowRight, Wrench, Hammer, Factory, Settings, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Wrench, Hammer, Factory, Settings, CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "wouter";
-import { useRef, useEffect, useState } from "react";
-import Typed from "typed.js";
+import { useRef, useEffect, useState, useCallback } from "react";
+import { Carousel } from "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@/styles/slider-nav.css";
 
-// Components
 import { Button } from "@/components/ui/button";
+import { apiUrl } from "@/lib/api";
 
+const HERO_VIDEO =
+  "https://res.cloudinary.com/dqhnt5mus/video/upload/q_auto:best,f_auto,w_1280/v1777366937/download_lckhyt.mp4";
 
+const HERO_SLIDES = [
+  {
+    title: "Precision Engineering",
+    description: "Accuracy in every detail, excellence in every build.",
+  },
+  {
+    title: "Robust Solutions",
+    description: "Engineering durability that stands the test of time.",
+  },
+  {
+    title: "Building tomorrow's industrial infrastructure",
+    description:
+      "Forging the future through expert craftsmanship and innovative engineering.",
+  },
+  {
+    title: "Innovation at Scale",
+    description:
+      "Deploying cutting-edge technology to solve complex industrial challenges.",
+  },
+  {
+    title: "Strategic Partnership",
+    description:
+      "Your trusted ally in navigating large-scale mechanical projects.",
+  },
+] as const;
 
-const texts = {
-  "Precision Engineering": "Accuracy in every detail, excellence in every build.",
-  "Robust Solutions": "Engineering durability that stands the test of time.",
-  "Building tomorrow's industrial infrastructure": "Forging the future through expert craftsmanship and innovative engineering.",
-  "Innovation at Scale": "Deploying cutting-edge technology to solve complex industrial challenges.",
-  "Strategic Partnership": "Your trusted ally in navigating large-scale mechanical projects."
+const HERO_CAROUSEL_ID = "heroCarousel";
+
+type Service = {
+  id: number;
+  uuid: string;
+  title: string;
+  image: string;
+  description: string;
 }
-
 
 
 export default function Home() {
 
-  const el = useRef(null);
-  const [subText, setSubText] = useState(texts["Precision Engineering"]);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const isAnimatingRef = useRef(false);
+  const [items, setItems] = useState<Service[]>([]);
+  const [index, setIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
+  useEffect(() => {
+    isAnimatingRef.current = isAnimating;
+  }, [isAnimating]);
 
-  useEffect(()=>{
-    const keys = Object.keys(texts)
-    const typed = new Typed(el.current,{
-      strings: keys,
-      typeSpeed: 60,
-      backSpeed: 30,
-      backDelay: 2000,
-      loop: true,
-      preStringTyped: (arrayPos: number) => {
-        setSubText(texts[keys[arrayPos] as keyof typeof texts]);
-      },
-    });
-    return () => {
-      typed.destroy();
+  async function getServices(){
+    const response = await fetch(apiUrl("/api/services"));
+    if (!response.ok) {
+      throw new Error("Failed to fetch services");
     }
+    return response.json();
+  }
+
+  useEffect(() => {
+    getServices().then((services) => {
+      setItems(services);
+    });
   }, []);
 
+  useEffect(() => {
+    const el = document.getElementById(HERO_CAROUSEL_ID);
+    if (!el) return;
+    const carousel = Carousel.getOrCreateInstance(el, {
+      interval: 6000,
+      ride: "carousel",
+    });
+    return () => carousel.dispose();
+  }, []);
 
+  useEffect(() => {
+    if (!trackRef.current) return;
+    const firstCard =
+      trackRef.current.querySelector(".slide-card");
+    if (!firstCard) return;
+    const cardWidth =
+      (firstCard as HTMLElement).offsetWidth;
+    trackRef.current.style.transition =
+      isAnimating
+        ? "transform 500ms ease"
+        : "none";
+    trackRef.current.style.transform =
+      `translateX(-${index * cardWidth}px)`;
+  }, [index, isAnimating, items]);
+  
+  const nextSlide = useCallback(() => {
+    if (isAnimatingRef.current) return;
+    setIsAnimating(true);
+    setIndex(prev => prev + 1);
+    setTimeout(() => {
+      setItems(prev => {
+        const updated = [...prev];
+        updated.push(updated.shift()!);
+        return updated;
+      });
+      setIndex(prev => prev - 1);
+      setIsAnimating(false);
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    if (items.length <= 1) return;
+
+    const intervalId = window.setInterval(() => {
+      nextSlide();
+    }, 3000);
+
+    return () => window.clearInterval(intervalId);
+  }, [items.length, nextSlide]);
+  
+  const prevSlide = () => {
+    if (isAnimating) return;
+    setItems(prev => {
+      const updated = [...prev];
+      updated.unshift(updated.pop()!);
+      return updated;
+    });
+  
+    setIndex(1);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setIsAnimating(true);
+        setIndex(0);
+      });
+    });
+
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 500);
+  };
+  
   return (
     <div className="overflow-hidden">
-      {/* HERO SECTION */}
-      <section className="relative h-[82vh] min-h-[400px] flex items-end justify-center pb-20">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            // poster="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=2070"
-            className="w-full h-full object-cover"
+      {/* HERO SECTION — Bootstrap carousel: one id, fade + autoplay + captions */}
+      <section className="relative h-[82vh] min-h-[400px]">
+        <div
+          id={HERO_CAROUSEL_ID}
+          className="carousel slide carousel-fade h-full w-full"
+          data-bs-ride="carousel"
+          data-bs-interval="6000"
+        >
+          <div className="carousel-indicators">
+            {HERO_SLIDES.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                data-bs-target={`#${HERO_CAROUSEL_ID}`}
+                data-bs-slide-to={idx}
+                className={idx === 0 ? "active" : undefined}
+                aria-current={idx === 0 ? "true" : undefined}
+                aria-label={`Slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+
+          <div className="carousel-inner h-full">
+            {HERO_SLIDES.map((slide, idx) => (
+              <div
+                key={slide.title}
+                className={`carousel-item relative h-full ${idx === 0 ? "active" : ""}`}
+              >
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="d-block h-full min-h-[82vh] w-full object-cover"
+                >
+                  <source src={HERO_VIDEO} type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent pointer-events-none" />
+                <div className="carousel-caption d-none d-md-block pb-20 text-start">
+                  <h5 className="text-2xl font-bold uppercase tracking-wide">
+                    {slide.title}
+                  </h5>
+                  <p className="mt-2 max-w-xl text-slate-200">{slide.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            className="carousel-control-prev"
+            type="button"
+            data-bs-target={`#${HERO_CAROUSEL_ID}`}
+            data-bs-slide="prev"
           >
-            <source
-              src="https://res.cloudinary.com/dqhnt5mus/video/upload/q_auto:best,f_auto,w_1280/v1777366937/download_lckhyt.mp4"
-              type="video/mp4"
-            />
-          </video>
-
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
-        </div>
-
-        <div className="container relative z-10 px-6 pt-32 md:pt-44">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-3xl"
+            <span className="carousel-control-prev-icon" aria-hidden="true" />
+            <span className="visually-hidden">Previous</span>
+          </button>
+          <button
+            className="carousel-control-next"
+            type="button"
+            data-bs-target={`#${HERO_CAROUSEL_ID}`}
+            data-bs-slide="next"
           >
-            <h1 className="text-5xl md:text-5xl font-bold text-white mb-6 leading-tight uppercase font-display">
-              <span className="text-transparent text-white" ref={el} />
-            </h1>
-
-            <p className="text-lg md:text-xl text-slate-300 mb-10 max-w-xl font-light leading-relaxed">
-              {subText}
-            </p>
-
-          </motion.div>
+            <span className="carousel-control-next-icon" aria-hidden="true" />
+            <span className="visually-hidden">Next</span>
+          </button>
         </div>
       </section>
 
+      {/* what we do */}
+      <section className="py-24  bg-white">
+        <div className="container mx-auto px-8 md:px-12 lg:px-16 py-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-3xl font-bold text-[#303843] normal-case" style={{ fontFamily: 'Roboto' }}>
+              What we do 
+            </h2>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={prevSlide}
+                aria-label="Previous slide"
+                className="slider-nav-btn flex h-7 w-7 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-600"
+              >
+                <ChevronLeft className="h-3 w-3" strokeWidth={1.5} />
+              </button>
+              <button
+                type="button"
+                onClick={nextSlide}
+                aria-label="Next slide"
+                className="slider-nav-btn flex h-7 w-7 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-600"
+              >
+                <ChevronRight className="h-3 w-3" strokeWidth={1.5} />
+              </button>
+            </div>
+          </div>
+
+          {/* SLIDER */}
+          <div
+            className="overflow-hidden w-full"
+          >
+            <div
+              ref={trackRef}
+              className="flex"
+            >
+              {items.map((service, idx) => {
+                return (
+                  <div
+                    key={idx}
+                    className="
+                      slide-card
+                      min-w-full
+                      sm:min-w-[50%]
+                      lg:min-w-[33.333%]
+                      p-2
+                      h-[600px]
+                    "
+                  >
+                    <div className="
+                      h-full
+                      overflow-hidden
+                      border-1
+                      bg-white
+                    ">
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="
+                          w-full
+                          h-[400px]
+                          object-cover
+                        "
+                      />
+                      <div className="p-5">
+                        <h5 className="text-xl font-bold mb-2">
+                          {service.title}
+                        </h5>
+                        <p className="text-slate-600">
+                          {service.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+
       {/* SERVICES PREVIEW */}
       <section className="py-24 bg-slate-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-8 md:px-12 lg:px-16">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-3xl font-bold mb-4 text-slate-900 uppercase">Our Expertise</h2>
             <div className="w-24 h-1 bg-primary-gradient mx-auto mb-6" />
@@ -122,11 +334,11 @@ export default function Home() {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="py-24 bg-zinc-950 text-white relative overflow-hidden">
+      <section className="py-24 text-slate-50 relative overflow-hidden  bg-[#E8EAEF] ">
         {/* Decorative background element */}
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-white/[0.04] skew-x-12 translate-x-32" />
+        <div className="absolute top-0 right-0 w-1/3 h-full skew-x-12 translate-x-32  " />
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-8 md:px-12 lg:px-16 relative z-10 text-[#303843]  ">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
               <div className="grid grid-cols-2 gap-4">
@@ -134,20 +346,20 @@ export default function Home() {
                 <img
                   src="https://images.unsplash.com/photo-1503708928676-1cb796a0891e?auto=format&fit=crop&q=80&w=1000"
                   alt="Industrial structure"
-                  className="rounded-lg shadow-2xl translate-y-8"
+                  className="shadow-2xl translate-y-8"
                 />
                 {/* engineer blueprint image */}
                 <img
-                  src="https://pixabay.com/get/g6209c8c541bb4c570a903741e5f44a2daa69489e2c11f1328cfc9348a3fa54bde52805cf60bb6c72ac51d783850ca163b33377782ad546e8f77179e6c0403dc5_1280.jpg"
+                  src="https://images.unsplash.com/photo-1503708928676-1cb796a0891e?auto=format&fit=crop&q=80&w=1000"
                   alt="Engineering blueprints"
-                  className="rounded-lg shadow-2xl translate-y-12 lg:translate-y-0"
+                  className="shadow-2xl translate-y-12 lg:translate-y-0"
                 />
               </div>
             </div>
 
-            <div className="order-1 bgrgb(233, 240, 232)">
+            <div className="order-1">
               <h2 className="text-4xl font-bold mb-6 uppercase">Why Choose us?</h2>
-              <div className="w-20 h-1 bg-primary-gradient mb-8" />
+              <div className="w-20 h-1 bg-slate-700 mb-8" />
 
               <div className="space-y-8">
                 {[
@@ -157,12 +369,12 @@ export default function Home() {
                   { title: "Experienced Team", text: "Experienced workers and welders with decades of combined experience." }
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-start group">
-                    <div className="bg-zinc-800 p-2 rounded mr-4 group-hover:bg-primary-gradient transition-[background-image] duration-200">
-                      <CheckCircle2 className="w-6 h-6 text-primary group-hover:text-white" />
+                    <div className="bg-slate-200 p-2 mr-4 group-hover:bg-slate-700 transition-[background-image] duration-200">
+                      <CheckCircle2 className="w-6 h-6 text-slate-700 group-hover:text-white" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold mb-1 group-hover:text-primary transition-colors">{item.title}</h3>
-                      <p className="text-slate-400">{item.text}</p>
+                      <h3 className="text-xl font-bold mb-1 group-hover:text-slate-700 transition-colors">{item.title}</h3>
+                      <p className="text-slate-700">{item.text}</p>
                     </div>
                   </div>
                 ))}

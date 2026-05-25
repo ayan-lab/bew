@@ -67,6 +67,18 @@ export const RequestedReviews = pgTable("requested_reviews", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+
+export const services = pgTable("services", {
+  id: serial("id").primaryKey(),
+  uuid: uuid("uuid").notNull().defaultRandom(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  image: varchar("image", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+
 // Users can have many reviews
 export const userRelations = relations(user, ({ many }) => ({
   reviews: many(reviews),
@@ -110,6 +122,9 @@ export const insertClientSchema = createInsertSchema(client).omit({ id: true, cr
 export type Client = typeof client.$inferSelect;
 export type InsertClient = z.infer<typeof insertClientSchema>;
 
+export const insertServiceSchema = createInsertSchema(services).omit({ id: true, createdAt: true, updatedAt: true });
+export type Service = typeof services.$inferSelect;
+export type InsertService = z.infer<typeof insertServiceSchema>;
 
 
 
