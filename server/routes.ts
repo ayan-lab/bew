@@ -10,6 +10,7 @@ import { user as usersTable } from "./shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 import { uploadProfileImage } from "./cloudinary-upload";
+import { sendEnquiryEmail } from "./email/maileroo.js";
 
 const profileUpload = multer({
   storage: multer.memoryStorage(),
@@ -52,6 +53,17 @@ export async function registerRoutes(
     try {
       const input = api.contact.submit.input.parse(req.body);
       const result = await storage.createContactSubmission(input);
+
+      try {
+        await sendEnquiryEmail({
+          name: result.name,
+          email: result.email,
+          message: result.message,
+        });
+      } catch (emailErr) {
+        console.error("Enquiry email failed:", emailErr);
+      }
+
       res.status(201).json(result);
     } catch (err) {
       if (err instanceof z.ZodError) {
