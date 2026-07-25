@@ -10,7 +10,12 @@ import { user as usersTable } from "./shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 import { uploadProfileImage } from "./cloudinary-upload";
-import { sendEnquiryEmail } from "./email/maileroo.js";
+import { sendEnquiryEmail, sendReviewRequestEmail } from "./email/maileroo.js";
+import {
+  buildReviewActionUrl,
+  verifyReviewActionToken,
+  type ReviewAction,
+} from "./email/review-action-token";
 
 const profileUpload = multer({
   storage: multer.memoryStorage(),
@@ -44,6 +49,29 @@ const createProjectReviewBodySchema = z.object({
   comment: z.string().min(1, "Comment is required"),
 });
 
+function reviewActionHtmlPage(title: string, body: string, ok: boolean) {
+  const accent = ok ? "#166534" : "#991b1b";
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>${title}</title>
+  <style>
+    body { font-family: Georgia, "Times New Roman", serif; background: #f3f0e8; color: #1c1917; margin: 0; padding: 48px 20px; }
+    main { max-width: 420px; margin: 0 auto; background: #fffdf8; border: 1px solid #e7e0d4; padding: 28px 24px; }
+    h1 { font-size: 1.35rem; margin: 0 0 12px; color: ${accent}; }
+    p { margin: 0; line-height: 1.5; color: #44403c; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>${title}</h1>
+    <p>${body}</p>
+  </main>
+</body>
+</html>`;
+}
 
 export async function registerRoutes(
   httpServer: Server,
@@ -129,7 +157,7 @@ export async function registerRoutes(
 
       try {
         const [projectRow] = await db
-          .select({ id: projectsTable.id })
+          .select({ id: projectsTable.id, title: projectsTable.title })
           .from(projectsTable)
           .where(eq(projectsTable.id, projectId))
           .limit(1);
@@ -153,6 +181,20 @@ export async function registerRoutes(
           comment: parsed.comment,
         });
 
+        try {
+          await sendReviewRequestEmail({
+            projectTitle: projectRow.title,
+            firstName: parsed.firstName,
+            lastName: parsed.lastName,
+            rating: parsed.rating,
+            message: parsed.comment,
+            approveUrl: buildReviewActionUrl(result.uuid, "approve"),
+            declineUrl: buildReviewActionUrl(result.uuid, "decline"),
+          });
+        } catch (emailErr) {
+          console.error("Review request email failed:", emailErr);
+        }
+
         return res.status(201).json(result);
       } catch (err) {
         if (err instanceof Error && err.message.includes("Cloudinary")) {
@@ -175,12 +217,109 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/reviews/requests/:uuid/:action", async (req, res) => {
+    const uuid = req.params.uuid?.trim();
+    const action = req.params.action as ReviewAction;
+    const token = typeof req.query.token === "string" ? req.query.token : undefined;
+
+    if (!uuid || !/^[0-9a-f-]{36}$/i.test(uuid)) {
+      return res
+        .status(400)
+        .type("html")
+        .send(reviewActionHtmlPage("Invalid link", "This review action link is not valid.", false));
+    }
+
+    if (action !== "approve" && action !== "decline") {
+      return res
+        .status(400)
+        .type("html")
+        .send(reviewActionHtmlPage("Invalid action", "Use Approve or Decline from the email.", false));
+    }
+
+    try {
+      if (!verifyReviewActionToken(uuid, action, token)) {
+        return res
+          .status(403)
+          .type("html")
+          .send(
+            reviewActionHtmlPage(
+              "Link expired or invalid",
+              "This approval link is invalid or has been tampered with. Ask for a new review email if needed.",
+              false,
+            ),
+          );
+      }
+
+      if (action === "approve") {
+        const outcome = await storage.approveRequestedReview(uuid);
+        if (outcome === "not_found") {
+          return res
+            .status(404)
+            .type("html")
+            .send(
+              reviewActionHtmlPage(
+                "Already handled",
+                "This review request was already approved or declined.",
+                false,
+              ),
+            );
+        }
+        return res
+          .status(200)
+          .type("html")
+          .send(
+            reviewActionHtmlPage(
+              "Review approved",
+              "The review has been published on the project page.",
+              true,
+            ),
+          );
+      }
+
+      const outcome = await storage.declineRequestedReview(uuid);
+      if (outcome === "not_found") {
+        return res
+          .status(404)
+          .type("html")
+          .send(
+            reviewActionHtmlPage(
+              "Already handled",
+              "This review request was already approved or declined.",
+              false,
+            ),
+          );
+      }
+      return res
+        .status(200)
+        .type("html")
+        .send(
+          reviewActionHtmlPage(
+            "Review declined",
+            "The review request has been discarded.",
+            true,
+          ),
+        );
+    } catch (err) {
+      console.error("Review action error:", err);
+      return res
+        .status(500)
+        .type("html")
+        .send(
+          reviewActionHtmlPage(
+            "Something went wrong",
+            "Could not process this review action. Try again or handle it from the admin tools.",
+            false,
+          ),
+        );
+    }
+  });
+
   app.get("/api/reviews/:projectId", async (req, res) => {
     const projectId = Number.parseInt(req.params.projectId, 10);
     if (Number.isNaN(projectId)) {
       return res.status(400).json({ message: "Invalid project id" });
     }
-  
+
     try {
       const rows = await db
         .select({

@@ -2,9 +2,12 @@ import { db } from "./db";
 import {
   contactSubmissions,
   RequestedReviews,
+  reviews,
+  user,
   type InsertContactSubmission,
   type ContactSubmission,
 } from "./shared/schema";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   createContactSubmission(submission: InsertContactSubmission): Promise<ContactSubmission>;
@@ -15,7 +18,9 @@ export interface IStorage {
     projectId: number;
     rating: number;
     comment: string;
-  }): Promise<{ id: number }>;
+  }): Promise<{ id: number; uuid: string }>;
+  approveRequestedReview(uuid: string): Promise<"approved" | "not_found">;
+  declineRequestedReview(uuid: string): Promise<"declined" | "not_found">;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -31,7 +36,7 @@ export class DatabaseStorage implements IStorage {
     projectId: number;
     rating: number;
     comment: string;
-  }): Promise<{ id: number }> {
+  }): Promise<{ id: number; uuid: string }> {
     const [row] = await db
       .insert(RequestedReviews)
       .values({
@@ -42,9 +47,52 @@ export class DatabaseStorage implements IStorage {
         rating: input.rating,
         comment: input.comment,
       })
+      .returning({ id: RequestedReviews.id, uuid: RequestedReviews.uuid });
+
+    return { id: row.id, uuid: row.uuid };
+  }
+
+  async approveRequestedReview(uuid: string): Promise<"approved" | "not_found"> {
+    return db.transaction(async (tx) => {
+      const [requested] = await tx
+        .select()
+        .from(RequestedReviews)
+        .where(eq(RequestedReviews.uuid, uuid))
+        .limit(1);
+
+      if (!requested) {
+        return "not_found";
+      }
+
+      const [createdUser] = await tx
+        .insert(user)
+        .values({
+          firstName: requested.firstName,
+          lastName: requested.lastName ?? "",
+          profilePicture: requested.profilePicture,
+        })
+        .returning({ id: user.id });
+
+      await tx.insert(reviews).values({
+        userId: createdUser.id,
+        projectId: requested.projectId,
+        rating: requested.rating,
+        comment: requested.comment,
+      });
+
+      await tx.delete(RequestedReviews).where(eq(RequestedReviews.id, requested.id));
+
+      return "approved";
+    });
+  }
+
+  async declineRequestedReview(uuid: string): Promise<"declined" | "not_found"> {
+    const deleted = await db
+      .delete(RequestedReviews)
+      .where(eq(RequestedReviews.uuid, uuid))
       .returning({ id: RequestedReviews.id });
 
-    return { id: row.id };
+    return deleted.length > 0 ? "declined" : "not_found";
   }
 }
 
