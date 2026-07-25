@@ -94,7 +94,7 @@ export const Review = () => {
             title: "Request received",
             description: "Your review request has been saved. We'll follow up when it's processed.",
             variant: "default",
-            className: "bg-primary-gradient text-primary-foreground border-none",
+            className: "bg-primary text-primary-foreground border-none",
           });
           form.reset({
             firstName: "",
@@ -120,16 +120,16 @@ export const Review = () => {
   const isSubmitting = submitReview.isPending;
 
   return (
-    <div className="bg-slate-50 min-h-screen">
-      <section className="bg-zinc-950 text-white mb-10 relative overflow-hidden">
+    <div className="bg-muted min-h-screen">
+      <section className="bg-hero text-hero-foreground mb-10 relative overflow-hidden">
         <div className="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.35),transparent_55%)]" />
-        <div className="container mx-auto px-4 text-center pt-20 pb-14 relative z-10">
+        <div className="container mx-auto px-4 text-center py-14 relative z-10">
           <h1 className="text-4xl font-bold uppercase mb-2 tracking-tight">Leave a review</h1>
-          <p className="text-slate-400 max-w-xl mx-auto">
+          <p className="text-hero-foreground/65 max-w-xl mx-auto">
             Share your experience with this project. Your feedback helps others understand our work.
           </p>
           {projectIdParam ? (
-            <p className="text-slate-500 text-sm mt-4">
+            <p className="text-muted-foreground text-sm mt-4">
               <Link href={`/projects/${projectIdParam}`} className="text-primary hover:underline">
                 View project
               </Link>
@@ -144,14 +144,14 @@ export const Review = () => {
       </section>
 
       <div className="container mx-auto px-4 pb-20 max-w-2xl">
-        <Card className="border-slate-200 shadow-lg rounded-xl overflow-hidden">
-          <CardHeader className="border-b border-slate-100 bg-white">
-            <CardTitle className="text-xl uppercase text-slate-900">Review details</CardTitle>
+        <Card className="border-border shadow-lg overflow-hidden">
+          <CardHeader className="border-b border-border bg-card">
+            <CardTitle className="text-xl uppercase text-foreground">Review details</CardTitle>
             <CardDescription>
               Optional profile photo and required fields below. Leave the photo empty if you prefer.
             </CardDescription>
           </CardHeader>
-          <CardContent className="pt-8 bg-white">
+          <CardContent className="pt-8 bg-card">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -160,12 +160,12 @@ export const Review = () => {
                     name="firstName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-semibold text-slate-700">First name</FormLabel>
+                        <FormLabel className="font-semibold text-foreground/80">First name</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="First name"
                             disabled={isSubmitting}
-                            className="h-11 bg-slate-50 border-slate-200 focus-visible:ring-primary/30"
+                            className="h-11 bg-muted border-border focus-visible:ring-primary/30"
                             {...field}
                           />
                         </FormControl>
@@ -178,12 +178,12 @@ export const Review = () => {
                     name="lastName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-semibold text-slate-700">Last name</FormLabel>
+                        <FormLabel className="font-semibold text-foreground/80">Last name</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="Last name"
                             disabled={isSubmitting}
-                            className="h-11 bg-slate-50 border-slate-200 focus-visible:ring-primary/30"
+                            className="h-11 bg-muted border-border focus-visible:ring-primary/30"
                             {...field}
                           />
                         </FormControl>
@@ -198,23 +198,23 @@ export const Review = () => {
                   name="profilePicture"
                   render={({ field: { value: _value, onChange, ...field } }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold text-slate-700">
-                        Profile picture <span className="font-normal text-slate-500">(optional)</span>
+                      <FormLabel className="font-semibold text-foreground/80">
+                        Profile picture <span className="font-normal text-muted-foreground">(optional)</span>
                       </FormLabel>
                       <FormControl>
                         <div className="space-y-3">
                           <label
                             className={cn(
-                              "flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-200 bg-slate-50 px-6 py-8 text-center transition-colors",
-                              !isSubmitting && "hover:border-primary/40 hover:bg-slate-100/80 cursor-pointer",
+                              "flex flex-col items-center justify-center gap-2  border-2 border-dashed border-border bg-muted px-6 py-8 text-center transition-colors",
+                              !isSubmitting && "hover:border-primary/40 hover:bg-muted/80 cursor-pointer",
                               isSubmitting && "opacity-60 pointer-events-none",
                             )}
                           >
-                            <Upload className="h-8 w-8 text-slate-400" aria-hidden />
-                            <span className="text-sm text-slate-600">
+                            <Upload className="h-8 w-8 text-hero-foreground/65" aria-hidden />
+                            <span className="text-sm text-muted-foreground">
                               Click to upload{" "}
-                              <span className="font-medium text-slate-800">JPEG, PNG, WebP, or GIF</span>
-                              <span className="block text-xs text-slate-500 mt-1">Optional · max 5 MB</span>
+                              <span className="font-medium text-foreground">JPEG, PNG, WebP, or GIF</span>
+                              <span className="block text-xs text-muted-foreground mt-1">Optional · max 5 MB</span>
                             </span>
                             <Input
                               {...field}
@@ -234,13 +234,13 @@ export const Review = () => {
                             />
                           </label>
                           {previewUrl ? (
-                            <div className="flex items-center gap-4 rounded-md border border-slate-200 bg-white p-3">
+                            <div className="flex items-center gap-4 border border-border bg-card p-3">
                               <img
                                 src={previewUrl}
                                 alt="Profile preview"
-                                className="h-16 w-16 rounded-full object-cover border border-slate-200"
+                                className="h-16 w-16 object-cover border border-border"
                               />
-                              <p className="text-sm text-slate-600 truncate">
+                              <p className="text-sm text-muted-foreground truncate">
                                 {profileFile instanceof File ? profileFile.name : ""}
                               </p>
                             </div>
@@ -257,7 +257,7 @@ export const Review = () => {
                   name="rating"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold text-slate-700">Your rating</FormLabel>
+                      <FormLabel className="font-semibold text-foreground/80">Your rating</FormLabel>
                       <FormControl>
                         <div
                           className="flex flex-col gap-2"
@@ -275,7 +275,7 @@ export const Review = () => {
                                   disabled={isSubmitting}
                                   onClick={() => field.onChange(starValue)}
                                   className={cn(
-                                    "rounded-md p-1 text-slate-300 transition-colors",
+                                    " p-1 text-muted-foreground transition-colors",
                                     "hover:text-amber-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                                     "disabled:pointer-events-none disabled:opacity-50",
                                     filled && "text-amber-400",
@@ -292,7 +292,7 @@ export const Review = () => {
                               );
                             })}
                           </div>
-                          <p className="text-sm text-slate-500">
+                          <p className="text-sm text-muted-foreground">
                             {(field.value ?? 0) > 0
                               ? `${field.value} out of 5 stars`
                               : "Select 1–5 stars."}
@@ -309,13 +309,13 @@ export const Review = () => {
                   name="comment"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold text-slate-700">Comment</FormLabel>
+                      <FormLabel className="font-semibold text-foreground/80">Comment</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Describe your experience with this project…"
                           rows={5}
                           disabled={isSubmitting}
-                          className="resize-y min-h-[120px] bg-slate-50 border-slate-200 focus-visible:ring-primary/30"
+                          className="resize-y min-h-[120px] bg-muted border-border focus-visible:ring-primary/30"
                           {...field}
                         />
                       </FormControl>

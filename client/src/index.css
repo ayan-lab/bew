@@ -1,71 +1,168 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Industrial palette — warm zinc surfaces + copper-amber accent.
+  (Bootstrap blue is overridden below so it cannot leak in.)
+*/
 :root {
-  /* Modern industrial: cool neutrals + teal accent */
-  --background: 210 20% 99%;
-  --foreground: 222 47% 11%;
+  --background: 40 10% 97%;
+  --foreground: 30 8% 12%;
 
-  /* Teal accent — pairs with steel/construction imagery; buttons use bg-primary-gradient */
-  --primary: 173 58% 39%;
+  --card: 0 0% 100%;
+  --card-foreground: 30 8% 12%;
+  --card-border: 30 8% 88%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 30 8% 12%;
+  --popover-border: 30 8% 88%;
+
+  /* Copper-amber — industrial, works on light and dark hero */
+  --primary: 28 68% 42%;
   --primary-foreground: 0 0% 100%;
+  --primary-border: hsl(28 68% 34%);
 
-  --secondary: 214 32% 96%;
-  --secondary-foreground: 222 47% 11%;
+  --secondary: 30 8% 93%;
+  --secondary-foreground: 30 8% 18%;
+  --secondary-border: hsl(30 8% 86%);
 
-  --muted: 214 26% 93%;
-  --muted-foreground: 215 16% 42%;
+  --muted: 30 10% 93%;
+  --muted-foreground: 30 6% 40%;
+  --muted-border: hsl(30 8% 86%);
 
-  --accent: 222 47% 14%;
-  --accent-foreground: 210 40% 98%;
+  --accent: 28 68% 42%;
+  --accent-foreground: 0 0% 100%;
+  --accent-border: hsl(28 68% 34%);
 
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 98%;
+  --destructive-border: hsl(0 72% 45%);
 
-  --border: 214 24% 88%;
-  --input: 214 24% 88%;
-  --ring: 173 58% 39%;
+  --border: 30 10% 88%;
+  --input: 30 10% 88%;
+  --ring: 28 68% 42%;
 
-  --radius: 0.25rem;
+  --hero: 30 10% 9%;
+  --hero-foreground: 40 15% 96%;
+
+  --radius: 0;
+  --button-outline: hsl(30 10% 80%);
+
+  /* Kill Bootstrap’s default blue */
+  --bs-primary: hsl(28 68% 42%);
+  --bs-primary-rgb: 180, 96, 34;
+  --bs-link-color: hsl(28 68% 38%);
+  --bs-link-hover-color: hsl(28 68% 30%);
+  --bs-focus-ring-color: hsla(28, 68%, 42%, 0.25);
+
+  color-scheme: light;
 }
 
 .dark {
-  --background: 222 47% 6%;
-  --foreground: 210 40% 98%;
-  --primary: 172 55% 50%;
-  --primary-foreground: 222 47% 6%;
+  --background: 30 8% 7%;
+  --foreground: 40 12% 94%;
+
+  --card: 30 8% 11%;
+  --card-foreground: 40 12% 94%;
+  --card-border: 30 6% 18%;
+
+  --popover: 30 8% 11%;
+  --popover-foreground: 40 12% 94%;
+  --popover-border: 30 6% 18%;
+
+  --primary: 32 72% 52%;
+  --primary-foreground: 30 10% 8%;
+  --primary-border: hsl(32 60% 42%);
+
+  --secondary: 30 6% 15%;
+  --secondary-foreground: 40 12% 92%;
+  --secondary-border: hsl(30 6% 22%);
+
+  --muted: 30 6% 14%;
+  --muted-foreground: 30 8% 65%;
+  --muted-border: hsl(30 6% 20%);
+
+  --accent: 32 72% 52%;
+  --accent-foreground: 30 10% 8%;
+  --accent-border: hsl(32 60% 42%);
+
+  --destructive: 0 70% 48%;
+  --destructive-foreground: 0 0% 98%;
+  --destructive-border: hsl(0 70% 42%);
+
+  --border: 30 6% 18%;
+  --input: 30 6% 18%;
+  --ring: 32 72% 52%;
+
+  --hero: 30 10% 5%;
+  --hero-foreground: 40 12% 94%;
+
+  --button-outline: hsl(30 6% 28%);
+
+  --bs-primary: hsl(32 72% 52%);
+  --bs-primary-rgb: 220, 140, 45;
+  --bs-link-color: hsl(32 72% 58%);
+  --bs-link-hover-color: hsl(32 72% 68%);
+  --bs-focus-ring-color: hsla(32, 72%, 52%, 0.35);
+
+  color-scheme: dark;
 }
 
 @layer base {
   * {
     @apply border-border;
+    border-radius: 0 !important;
+  }
+  *::before,
+  *::after {
+    border-radius: 0 !important;
   }
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Roboto', sans-serif;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Oswald', sans-serif;
-    text-transform: uppercase; /* Industrial headers are often caps */
+    text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 }
 
-/* Scrollbar aligned with theme */
+/* Force Bootstrap utility classes to use our primary (not blue) */
+.text-primary {
+  color: hsl(var(--primary)) !important;
+}
+.bg-primary {
+  background-color: hsl(var(--primary)) !important;
+}
+.border-primary {
+  border-color: hsl(var(--primary)) !important;
+}
+.btn-primary {
+  --bs-btn-bg: hsl(var(--primary));
+  --bs-btn-border-color: hsl(var(--primary));
+  --bs-btn-hover-bg: hsl(var(--primary) / 0.9);
+  --bs-btn-hover-border-color: hsl(var(--primary) / 0.9);
+  --bs-btn-active-bg: hsl(var(--primary) / 0.85);
+  --bs-btn-active-border-color: hsl(var(--primary) / 0.85);
+}
+
+/* Scrollbar follows theme */
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: hsl(214 32% 96%);
+  background: hsl(var(--muted));
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(215 16% 42%);
-  border-radius: 2px;
+  background: hsl(var(--muted-foreground) / 0.45);
+  border-radius: 0;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(173 58% 32%);
+  background: hsl(var(--primary));
 }

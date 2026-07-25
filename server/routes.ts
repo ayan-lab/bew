@@ -4,12 +4,13 @@ import multer from "multer";
 import { storage } from "./storage";
 import { api } from "./shared/routes";
 import { z } from "zod";
-import { project as projectsTable, client as clientsTable } from "./shared/schema";
+import { project as projectsTable, client as clientsTable, services } from "./shared/schema";
 import { reviews as reviewsTable } from "./shared/schema";
 import { user as usersTable } from "./shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 import { uploadProfileImage } from "./cloudinary-upload";
+import { sendEnquiryEmail } from "./email/maileroo.js";
 
 const profileUpload = multer({
   storage: multer.memoryStorage(),
@@ -52,6 +53,17 @@ export async function registerRoutes(
     try {
       const input = api.contact.submit.input.parse(req.body);
       const result = await storage.createContactSubmission(input);
+
+      try {
+        await sendEnquiryEmail({
+          name: result.name,
+          email: result.email,
+          message: result.message,
+        });
+      } catch (emailErr) {
+        console.error("Enquiry email failed:", emailErr);
+      }
+
       res.status(201).json(result);
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -192,6 +204,16 @@ export async function registerRoutes(
     } catch (err) {
       console.error("Reviews error:", err);
       return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get("/api/services", async (_req, res) => {
+    try {
+      const rows = await db.select().from(services);
+      res.status(200).json(rows);
+    } catch (err) {
+      console.error("Services error:", err);
+      res.status(500).json({ message: "Internal server error" });
     }
   });
 

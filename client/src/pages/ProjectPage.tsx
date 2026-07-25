@@ -15,8 +15,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-
-
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 async function fetchProject(id: string): Promise<Project> {
   const response = await fetch(apiUrl(`/api/projects/${id}`));
@@ -45,6 +44,15 @@ export default function ProjectPage() {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [reviews, setReviews] = useState<ReviewWithUser[]>([]);
 
+  usePageMeta({
+    title: project?.title
+      ? `${project.title} — Project`
+      : "Project Details",
+    description: project?.description
+      ? project.description.slice(0, 155)
+      : "Industrial project details from Baidya Engineering Works — fabrication, erection, and plant works in West Bengal.",
+    path: params?.id ? `/projects/${params.id}` : "/projects",
+  });
 
   useEffect(() => {
     if (!params?.id) {
@@ -109,21 +117,21 @@ export default function ProjectPage() {
             <img src={project.image[0]} alt={project.title} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
           </div>
-          <div className="container relative z-10 px-6 pt-32 md:pt-44">
+          <div className="container relative z-10 mx-auto px-6 pb-4">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="max-w-3xl"
             >
-              <h1 className="text-5xl md:text-5xl font-bold text-white mb-6 leading-tight uppercase font-display">
+              <h1 className="text-5xl md:text-5xl font-bold text-hero-foreground mb-6 leading-tight uppercase font-display">
                 {project.title}
               </h1>
             </motion.div>
           </div>
         </section>
         {/* path */}
-        <div className="border-y border-slate-200 bg-slate-100 text-black">
+        <div className="border-y border-border bg-muted text-black">
           <div className="container mx-auto px-4 py-3">
             <Breadcrumb>
               <BreadcrumbList>
@@ -148,7 +156,7 @@ export default function ProjectPage() {
         </div>
 
         {/* PROJECT DETAILS */}
-        <section className="py-24 bg-white">
+        <section className="py-24 bg-card">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -159,7 +167,7 @@ export default function ProjectPage() {
             >
               {/* image gallery */}
               <div>
-                <div className="overflow-hidden border border-slate-200 shadow-lg">
+                <div className="overflow-hidden border border-border shadow-lg">
                   <img
                     src={project.image[activeImageIndex] ?? project.image[0]}
                     alt={project.title}
@@ -175,11 +183,7 @@ export default function ProjectPage() {
                           key={image}
                           type="button"
                           onClick={() => setActiveImageIndex(index)}
-                          className={`overflow-hidden border transition ${
-                            isActive
-                              ? "border-primary ring-2 ring-primary/20"
-                              : "border-slate-200 hover:border-slate-400"
-                          }`}
+                          className={`overflow-hidden border transition ${ isActive ? "border-primary ring-2 ring-primary/20" : "border-border hover:border-slate-400" }`}
                           aria-label={`Show image ${index + 1}`}
                         >
                           <img
@@ -195,31 +199,31 @@ export default function ProjectPage() {
               </div>
 
               {/* project details */}
-              <div className="bg-white border border-slate-200 p-6 md:p-8 shadow-sm">
-                <h2 className="text-2xl md:text-3xl font-semibold tracking-wide text-slate-900 uppercase leading-tight">
+              <div className="bg-card border border-border p-6 md:p-8 shadow-sm">
+                <h2 className="text-2xl md:text-3xl font-semibold tracking-wide text-foreground uppercase leading-tight">
                   {project.title}
                 </h2>
 
                 <div className="mt-5 flex flex-wrap items-center gap-3">
-                  <span className="inline-flex items-center rounded-md bg-slate-100 px-3 py-1.5 text-xs font-semibold tracking-widest text-slate-700 uppercase">
+                  <span className="inline-flex items-center bg-muted px-3 py-1.5 text-xs font-semibold tracking-widest text-foreground/80 uppercase">
                     <ArrowUpRight className="mr-1.5 h-3.5 w-3.5" />
                     {project.category}
                   </span>
-                  <span className="inline-flex items-center text-sm text-slate-600">
+                  <span className="inline-flex items-center text-sm text-muted-foreground">
                     <MapPin className="mr-1.5 h-4 w-4 text-primary" />
                     {project.location}
                   </span>
                 </div>
 
-                <div className="mt-6 space-y-4 text-slate-700">
+                <div className="mt-6 space-y-4 text-foreground/80">
                   <p className="text-sm leading-relaxed">
-                    <span className="font-semibold text-slate-900">Client :</span> {project.client}
+                    <span className="font-semibold text-foreground">Client :</span> {project.client}
                   </p>
                   <p className="text-sm leading-relaxed whitespace-pre-line">
-                    <span className="font-semibold text-slate-900">Scope: </span> 
+                    <span className="font-semibold text-foreground">Scope: </span> 
                     {project.description}
                   </p>
-                  <p className="text-sm leading-relaxed font-semibold text-slate-900">
+                  <p className="text-sm leading-relaxed font-semibold text-foreground">
                     Project Status: {project.status}
                   </p>
                 </div>
@@ -228,29 +232,29 @@ export default function ProjectPage() {
           </div>
         </section>
 
-        <div className="bg-white">
+        <div className="bg-card">
           <div className="container mx-auto px-4">
-            <Separator className="bg-slate-200" />
+            <Separator className="bg-secondary" />
           </div>
         </div>
 
         {/* reviews section */}
-        <section className="bg-white pb-24 pt-14 md:pt-16">
+        <section className="bg-card pb-24 pt-14 md:pt-16">
           <div className="container mx-auto px-4">
             <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
               <div>
-                <h2 className="text-2xl font-bold uppercase tracking-tight text-slate-900 md:text-3xl">
+                <h2 className="text-2xl font-bold uppercase tracking-tight text-foreground md:text-3xl">
                   Reviews
                 </h2>
-                <div className="mt-2 h-1 w-16 bg-primary-gradient rounded-full" />
-                <p className="mt-3 max-w-xl text-sm text-slate-600 md:text-base">
+                <div className="mt-2 h-1 w-16 bg-primary" />
+                <p className="mt-3 max-w-xl text-sm text-muted-foreground md:text-base">
                   Feedback from people who worked with us on this project.
                 </p>
               </div>
               <Button
                 asChild
                 size="lg"
-                className="w-full shrink-0 rounded-sm border-0 bg-primary-gradient px-8 py-6 text-sm font-bold uppercase tracking-widest text-white shadow-md transition-opacity hover:opacity-90 sm:w-auto"
+                className="w-full shrink-0 border-0 bg-primary px-8 py-6 text-sm font-bold uppercase tracking-widest text-primary-foreground shadow-md transition-opacity hover:opacity-90 sm:w-auto"
               >
                 <Link href={`/review/create_review/${project.id}`} className="inline-flex items-center justify-center gap-2">
                   Share your experience
@@ -261,7 +265,7 @@ export default function ProjectPage() {
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {reviews.map((review) =>{
                     return (    
-                        <div key={review.id} className="flex h-full flex-col rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                        <div key={review.id} className="flex h-full flex-col border border-border bg-card p-6 shadow-sm">
                             <div className="flex items-center gap-4">
                                 <Avatar className="h-12 w-12">
                                     <AvatarImage src={review.user.profilePicture ?? undefined} />
@@ -270,22 +274,18 @@ export default function ProjectPage() {
                                     </AvatarFallback>
                                 </Avatar>
                                 <div className="flex flex-col">
-                                    <h3 className="text-base font-semibold text-slate-900 uppercase">{review.user.firstName} {review.user.lastName}</h3>
+                                    <h3 className="text-base font-semibold text-foreground uppercase">{review.user.firstName} {review.user.lastName}</h3>
                                     <div className="mt-1 flex items-center gap-1" aria-label={`Rating: ${review.rating} out of 5`}>
                                     {Array.from({ length: 5 }).map((_, i) => (
                                         <Star
                                         key={i}
-                                        className={`h-4 w-4 ${
-                                            i < review.rating
-                                            ? "fill-amber-400 text-amber-400"
-                                            : "text-slate-300"
-                                        }`}
+                                        className={`h-4 w-4 ${ i < review.rating ? "fill-amber-400 text-amber-400" : "text-hero-foreground/70" }`}
                                         />
                                     ))}
                                     </div>
                                 </div>
                             </div>
-                            <p className="mt-4 text-sm leading-relaxed text-slate-600 italic">{review.comment}</p>
+                            <p className="mt-4 text-sm leading-relaxed text-muted-foreground italic">{review.comment}</p>
                         </div>
                     )
                 })}

@@ -1,21 +1,36 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, ArrowLeft } from "lucide-react";
+import { Link } from "wouter";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 export default function NotFound() {
-  return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md mx-4">
-        <CardContent className="pt-6">
-          <div className="flex mb-4 gap-2">
-            <AlertCircle className="h-8 w-8 text-red-500" />
-            <h1 className="text-2xl font-bold text-gray-900">404 Page Not Found</h1>
-          </div>
+  usePageMeta({
+    title: "Page Not Found",
+    description: "The page you requested could not be found on Baidya Engineering Works.",
+    path: "/",
+  });
 
-          <p className="mt-4 text-sm text-gray-600">
-            Did you forget to add the page to the router?
-          </p>
-        </CardContent>
-      </Card>
+  return (
+    <div className="flex min-h-[70vh] w-full items-center justify-center bg-muted px-4">
+      <div className="max-w-md text-center">
+        <AlertCircle className="mx-auto mb-4 h-12 w-12 text-primary" aria-hidden />
+        <h1 className="mb-3 text-3xl font-bold uppercase text-foreground">Page not found</h1>
+        <p className="mb-8 text-muted-foreground">
+          This page does not exist or may have moved. Return home or browse our services and
+          projects.
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Link href="/">
+            <span className="inline-flex cursor-pointer items-center bg-primary px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-primary-foreground hover:bg-primary/90">
+              <ArrowLeft className="mr-2 h-4 w-4" /> Back home
+            </span>
+          </Link>
+          <Link href="/contact">
+            <span className="inline-flex cursor-pointer text-sm font-semibold uppercase tracking-wider text-primary hover:underline">
+              Contact us
+            </span>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

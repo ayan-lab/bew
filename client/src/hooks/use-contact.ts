@@ -30,7 +30,7 @@ export function useSubmitContact() {
         title: "Quote Request Received",
         description: "We'll get back to you within 24 hours with a detailed estimate.",
         variant: "default",
-        className: "bg-primary-gradient text-primary-foreground border-none"
+        className: "bg-primary text-primary-foreground border-none"
       });
     },
     onError: (error) => {

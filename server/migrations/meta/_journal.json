@@ -15,6 +15,13 @@
       "when": 1777815708358,
       "tag": "0001_uneven_magus",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779692349726,
+      "tag": "0002_zippy_the_fury",
+      "breakpoints": true
     }
   ]
 }
