@@ -6,15 +6,14 @@ export default {
   theme: {
     extend: {
       borderRadius: {
-        lg: ".5625rem",
-        md: ".375rem",
-        sm: ".1875rem",
+        lg: "0",
+        md: "0",
+        sm: "0",
+        DEFAULT: "0",
+        none: "0",
+        full: "0",
       },
       backgroundImage: {
-        "primary-gradient":
-          "linear-gradient(226deg, rgb(45 212 191 / 0.55) 7%, rgb(13 148 136) 51%)",
-        "primary-gradient-hover":
-          "linear-gradient(226deg, rgb(94 234 212 / 0.75) 7%, rgb(15 118 110) 58%)",
         "whatsapp-cta":
           "linear-gradient(135deg, #075E54 0%, #128C7E 45%, #25D366 100%)",
       },
@@ -23,6 +22,10 @@ export default {
         foreground: "hsl(var(--foreground) / <alpha-value>)",
         border: "hsl(var(--border) / <alpha-value>)",
         input: "hsl(var(--input) / <alpha-value>)",
+        hero: {
+          DEFAULT: "hsl(var(--hero) / <alpha-value>)",
+          foreground: "hsl(var(--hero-foreground) / <alpha-value>)",
+        },
         card: {
           DEFAULT: "hsl(var(--card) / <alpha-value>)",
           foreground: "hsl(var(--card-foreground) / <alpha-value>)",

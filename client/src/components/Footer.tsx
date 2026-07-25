@@ -1,76 +1,118 @@
 import { Link } from "wouter";
-import { Facebook, Twitter, Linkedin, Instagram, ArrowRight, MapPin, Phone, Mail} from "lucide-react";
+import { ArrowRight, MapPin, Phone, Mail } from "lucide-react";
 
 export function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="bg-zinc-950 text-zinc-400 pt-16 pb-8 border-t-4 border-primary">
+    <footer className="border-t-4 border-primary bg-hero pb-8 pt-16 text-hero-foreground/70">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          {/* Brand */}
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-white uppercase tracking-wider mb-4">Baidya<span className="text-teal-400">.</span></h3>
-            <p className="text-sm leading-relaxed text-zinc-400">
-              Delivering precision engineering and robust construction solutions since 2005. We build the structures that shape tomorrow.
+        <div className="mb-12 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-4 lg:col-span-1">
+            <h3 className="mb-4 text-2xl font-bold uppercase tracking-wider text-hero-foreground">
+              Baidya<span className="text-primary"> Engineering Works</span>
+            </h3>
+            <p className="text-sm leading-relaxed text-hero-foreground/65">
+              Industrial engineering contractors in West Bengal since 2005. Utility systems,
+              plant maintenance, PEB works, pipeline fabrication, and steel construction for
+              heavy industry.
             </p>
-            {/* <div className="flex space-x-4 pt-4">
-              <SocialIcon Icon={Facebook} />
-              <SocialIcon Icon={Twitter} />
-              <SocialIcon Icon={Linkedin} />
-              <SocialIcon Icon={Instagram} />
-            </div> */}
           </div>
 
-          {/* Quick Links */}
           <div>
-            <h4 className="text-white font-bold uppercase tracking-widest mb-6 text-sm">Quick Links</h4>
+            <h4 className="mb-6 text-sm font-bold uppercase tracking-widest text-hero-foreground">
+              Quick Links
+            </h4>
             <ul className="space-y-3">
-              {['Home', 'Services', 'Projects', 'About', 'Contact'].map((item) => (
-                <li key={item}>
-                  <Link href={item === 'Home' ? '/' : `/${item.toLowerCase()}`} className="text-sm hover:text-teal-400 transition-colors flex items-center group">
-                    <ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-teal-400" />
-                    {item}
+              {[
+                { href: "/", label: "Home" },
+                { href: "/services", label: "Services" },
+                { href: "/projects", label: "Projects" },
+                { href: "/insights", label: "Insights" },
+                { href: "/about", label: "About" },
+                { href: "/contact", label: "Contact" },
+              ].map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="group flex items-center text-sm transition-colors hover:text-primary"
+                  >
+                    <ArrowRight
+                      size={14}
+                      className="-ml-4 mr-2 text-primary opacity-0 transition-all duration-300 group-hover:ml-0 group-hover:opacity-100"
+                    />
+                    {item.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div>
-            <h4 className="text-white font-bold uppercase tracking-widest mb-6 text-sm">Contact Us</h4>
+            <h4 className="mb-6 text-sm font-bold uppercase tracking-widest text-hero-foreground">
+              Services
+            </h4>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <Link href="/services" className="transition-colors hover:text-primary">
+                  Industrial Utility Engineering
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="transition-colors hover:text-primary">
+                  Plant Maintenance
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="transition-colors hover:text-primary">
+                  PEB Works
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="transition-colors hover:text-primary">
+                  Pipeline Fabrication &amp; Erection
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="mb-6 text-sm font-bold uppercase tracking-widest text-hero-foreground">
+              Contact Us
+            </h4>
             <ul className="space-y-4">
               <li className="flex items-start">
-                <MapPin className="w-5 h-5 text-teal-400 mr-3 mt-1 shrink-0" />
-                <span className="text-sm">Chickrand,<br />West Bengal 712304</span>
+                <MapPin className="mr-3 mt-1 h-5 w-5 shrink-0 text-primary" />
+                <span className="text-sm">
+                  Chikrand,
+                  <br />
+                  West Bengal 712304
+                </span>
               </li>
               <li className="flex items-center">
-                <Phone className="w-5 h-5 text-teal-400 mr-3 shrink-0" />
-                <span className="text-sm">+91 987 475 1736</span>
+                <Phone className="mr-3 h-5 w-5 shrink-0 text-primary" />
+                <a href="tel:+919874751736" className="text-sm transition-colors hover:text-primary">
+                  +91 987 475 1736
+                </a>
               </li>
               <li className="flex items-center">
-                <Mail className="w-5 h-5 text-teal-400 mr-3 shrink-0" />
-                <span className="text-sm">baidya.engineering@gmail.com</span>
+                <Mail className="mr-3 h-5 w-5 shrink-0 text-primary" />
+                <a
+                  href="mailto:baidyaengineering@gmail.com"
+                  className="break-all text-sm transition-colors hover:text-primary"
+                >
+                  baidyaengineering@gmail.com
+                </a>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
-          <p>&copy; {new Date().getFullYear()} Baidya Engineering Works. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <span className="hover:text-white cursor-pointer transition-colors">Privacy Policy</span>
-            <span className="hover:text-white cursor-pointer transition-colors">Terms of Service</span>
-          </div>
-        </div> */}
+        <div className="flex flex-col items-center justify-between border-t border-hero-foreground/15 pt-8 text-xs text-hero-foreground/50 md:flex-row">
+          <p>&copy; {year} Baidya Engineering Works. All rights reserved.</p>
+          <p className="mt-3 md:mt-0">Industrial contractors · West Bengal, India</p>
+        </div>
       </div>
     </footer>
-  );
-}
-
-function SocialIcon({ Icon }: { Icon: any }) {
-  return (
-    <a href="#" className="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-500 hover:bg-primary-gradient-hover hover:text-white transition-all duration-300">
-      <Icon size={18} />
-    </a>
   );
 }

@@ -3,7 +3,10 @@ import { motion } from "framer-motion";
 import type { Project } from "@/types/api";
 import { apiUrl } from "@/lib/api";
 import { Link } from "wouter";
+import { MapPin } from "lucide-react";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
+const COLUMNS = 3;
 
 async function fetchProjects(): Promise<Project[]> {
   const response = await fetch(apiUrl("/api/projects"));
@@ -13,22 +16,23 @@ async function fetchProjects(): Promise<Project[]> {
   return response.json();
 }
 
-export default function Projects() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
+/** How many “Updating soon” cells to fill the last incomplete row (at least one row if empty). */
+function comingSoonCount(projectCount: number) {
+  if (projectCount === 0) return COLUMNS;
+  const rem = projectCount % COLUMNS;
+  return rem === 0 ? 0 : COLUMNS - rem;
+}
 
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 },
-  };
+export default function Projects() {
+  usePageMeta({
+    title: "Projects Portfolio",
+    description:
+      "Explore industrial projects by Baidya Engineering Works — PEB, pipeline, utility, and maintenance work across West Bengal.",
+    path: "/projects",
+  });
+
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -38,73 +42,99 @@ export default function Projects() {
       })
       .catch(() => {
         if (!cancelled) setProjects([]);
+      })
+      .finally(() => {
+        if (!cancelled) setLoaded(true);
       });
     return () => {
       cancelled = true;
     };
-    
   }, []);
 
+  const placeholders = comingSoonCount(projects.length);
 
   return (
-    <div className="bg-slate-50 min-h-screen">
-      <section className="bg-zinc-950 text-white mb-12 overflow-hidden">
-        <div className="container mx-auto px-4 text-center py-16">
-          <h1 className="text-4xl font-bold uppercase mb-2">Our Portfolio</h1>
-          <p className="text-slate-400">Showcasing excellence in engineering and construction.</p>
+    <div className="min-h-screen bg-muted">
+      <section className="mb-12 overflow-hidden bg-hero text-hero-foreground">
+        <div className="container mx-auto px-4 py-16 text-center md:px-8">
+          <h1 className="mb-4 text-4xl font-bold uppercase">Our Portfolio</h1>
+          <p className="mx-auto max-w-2xl text-lg text-hero-foreground/65">
+            Selected industrial projects — fabrication, erection, utilities, and plant works
+            delivered for clients across West Bengal.
+          </p>
         </div>
       </section>
 
       <div className="container mx-auto px-4 pb-24">
-        <motion.p
-          className="mb-8 flex items-center justify-center gap-2 text-center text-xs font-semibold uppercase tracking-[0.2em] text-slate-500"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-        >
-          <span className="relative flex h-2 w-2 shrink-0" aria-hidden>
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/50" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-          </span>
-          <motion.span
-            animate={{ opacity: [0.45, 1, 0.45] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-          > We are building this website and more projects to be updated soon…
-          </motion.span>
-        </motion.p>
+        {!loaded ? (
+          <p className="py-16 text-center text-sm text-muted-foreground">Loading projects…</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
+            {projects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.06 }}
+              >
+                <Link href={`/projects/${project.id}`} className="group block outline-none">
+                  <article className="relative aspect-[4/3] cursor-pointer overflow-hidden bg-card shadow-sm transition-shadow duration-500 ease-out group-hover:shadow-2xl group-hover:shadow-black/40">
+                    <img
+                      src={project.image[0]}
+                      alt={project.title}
+                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
 
-        {/* Gallery Grid */}
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {projects.map((project) => (
-            <motion.div
-              key={project.id}
-              variants={item}
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group"
-            >
-              <Link href={`/projects/${project.id}`}>
-                <div className="relative h-64 overflow-hidden">
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors z-0" />
-                  <img 
-                    src={project.image[0]} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    {/* Dark veil: always on mobile, hover-only on md+ */}
+                    <div
+                      className="absolute inset-0 z-[1] bg-black/55 transition-colors duration-500 ease-out md:bg-black/0 md:group-hover:bg-black/55"
+                      aria-hidden
+                    />
+
+                    {/* Title + location: always visible on mobile, hover-only on md+ */}
+                    <div className="absolute inset-x-0 bottom-0 z-[2] translate-y-0 p-5 !opacity-100 transition-all duration-500 ease-out md:translate-y-3 md:!opacity-0 md:group-hover:translate-y-0 md:group-hover:!opacity-100">
+                      <h2 className="!text-white text-lg font-bold uppercase leading-snug drop-shadow-md md:text-xl">
+                        {project.title}
+                      </h2>
+                      {project.location ? (
+                        <p className="mt-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide !text-white/90 drop-shadow">
+                          <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden />
+                          {project.location}
+                        </p>
+                      ) : null}
+                    </div>
+                  </article>
+                </Link>
+              </motion.div>
+            ))}
+
+            {Array.from({ length: placeholders }, (_, i) => (
+              <motion.div
+                key={`coming-soon-${i}`}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: (projects.length + i) * 0.06 }}
+              >
+                <div
+                  className="relative flex aspect-[4/3] items-center justify-center overflow-hidden border border-dashed border-border bg-muted"
+                  aria-label="Updating soon"
+                >
+                  <div
+                    className="absolute inset-0 opacity-40"
+                    style={{
+                      backgroundImage:
+                        "repeating-linear-gradient(135deg, transparent, transparent 12px, hsl(var(--foreground) / 0.08) 12px, hsl(var(--foreground) / 0.08) 24px)",
+                    }}
+                    aria-hidden
                   />
+                  <span className="relative z-10 text-sm font-bold uppercase tracking-[0.2em] text-foreground/70">
+                    Updating soon
+                  </span>
                 </div>
-                <div className="p-6 border-b-4 border-transparent group-hover:border-primary transition-colors">
-                  <h3 className="text-xl font-bold text-slate-900 uppercase mb-2">{project.title}</h3>
-                  <p className="text-slate-500 text-sm">
-                    Precision executed project delivering high-quality results on time and within budget.
-                  </p>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

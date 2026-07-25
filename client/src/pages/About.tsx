@@ -1,9 +1,19 @@
-import { Shield, Target, Users, Award } from "lucide-react";
+import { Shield, Target, Users, Award, MapPin, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Link } from "wouter";
 import { apiUrl } from "@/lib/api";
 import { type Client } from "@/types/api";
+import { usePageMeta } from "@/hooks/use-page-meta";
+import { Reveal } from "@/components/Reveal";
 
 export default function About() {
+  usePageMeta({
+    title: "About Us — Industrial Contractors Since 2005",
+    description:
+      "Learn about Baidya Engineering Works — industrial contractors based in Chikrand, West Bengal since 2005. 20+ years of utility, PEB, pipeline, and plant maintenance work.",
+    path: "/about",
+  });
+
   const [clients, setClients] = useState<Client[]>([]);
 
   async function fetchClients(): Promise<Client[]> {
@@ -13,128 +23,213 @@ export default function About() {
     }
     return response.json();
   }
+
   useEffect(() => {
-    fetchClients().then(setClients);
+    fetchClients()
+      .then(setClients)
+      .catch(() => setClients([]));
   }, []);
 
   return (
     <div>
-      <section className="bg-zinc-950 text-white mb-12 overflow-hidden">
-        <div className="container mx-auto px-4 text-center py-16">
-          <h1 className="text-4xl font-bold uppercase mb-2">
-            Building Trust Through <span className="text-primary">Excellence</span>
-          </h1>
-          <p className="text-slate-400">
-            Baidya Engineering Works has been a cornerstone of industrial progress since 2005. We combine traditional craftsmanship with modern engineering solutions.
-          </p>
+      <section className="mb-12 overflow-hidden bg-hero text-hero-foreground">
+        <div className="container mx-auto px-4 py-16 text-center md:px-8">
+          <Reveal y={24}>
+            <h1 className="mb-4 text-4xl font-bold uppercase">
+              Building Trust Through <span className="text-primary">Excellence</span>
+            </h1>
+            <p className="mx-auto max-w-2xl text-lg text-hero-foreground/65">
+              Baidya Engineering Works has supported industrial progress in West Bengal since
+              2005 — combining disciplined craftsmanship with practical engineering on live
+              plant sites.
+            </p>
+          </Reveal>
         </div>
       </section>
 
       <div className="container mx-auto px-4 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
-          <div>
-            {/* Team/Office Image */}
+        <div className="mb-24 grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
+          <Reveal>
             <div className="relative">
-              <div className="absolute -inset-4 bg-primary/20 rounded-lg -z-10 translate-x-4 translate-y-4" />
+              <div className="-z-10 absolute -inset-4 translate-x-4 translate-y-4 bg-primary/20" />
               <img
                 src="https://images.pexels.com/photos/149387/pexels-photo-149387.jpeg"
-                alt="Engineering Team"
-                className="rounded-lg shadow-xl w-full"
+                alt="Baidya Engineering Works team on an industrial project"
+                className="w-full shadow-xl"
               />
             </div>
-          </div>
-          <div>
-            <h2 className="text-3xl font-bold uppercase text-slate-900 mb-6">Our Story</h2>
-            <p className="text-slate-600 mb-6 leading-relaxed">
-              Founded with a vision to provide superior engineering services, Baidya Engineering Works has grown from a small workshop to a full-service industrial solutions provider.
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h2 className="mb-6 text-3xl font-bold uppercase text-foreground">Our Story</h2>
+            <p className="mb-5 leading-relaxed text-muted-foreground">
+              Founded in 2005 in Chikrand, West Bengal, Baidya Engineering Works began as a
+              focused fabrication and site crew serving local industry. Over two decades we
+              have grown into a full-service industrial contractor trusted for utility
+              systems, plant maintenance, PEB structures, and pipeline packages.
             </p>
-            <p className="text-slate-600 mb-6 leading-relaxed">
-              Our journey is marked by a relentless pursuit of quality. We believe that every weld, every beam, and every bolt contributes to the safety and longevity of the structures we build.
+            <p className="mb-5 leading-relaxed text-muted-foreground">
+              Our reputation rests on how we show up on site: clear method statements,
+              welders who understand code and fit-up, and supervisors who protect both
+              schedule and safety. We believe every joint, beam, and bolt contributes to the
+              longevity of the facilities our clients depend on.
             </p>
-            <div className="grid grid-cols-2 gap-6 mt-8">
-              <div className="text-center p-6 bg-slate-50 rounded border border-slate-100">
-                <div className="text-4xl font-bold text-primary mb-2">18+</div>
-                <div className="text-xs font-bold uppercase text-slate-500 tracking-wider">Years Experience</div>
-              </div>
-              <div className="text-center p-6 bg-slate-50 rounded border border-slate-100">
-                <div className="text-4xl font-bold text-primary mb-2">500+</div>
-                <div className="text-xs font-bold uppercase text-slate-500 tracking-wider">Projects Completed</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr className="my-16 border-zinc-800" />
-        {/* Values */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold uppercase text-slate-900 mb-12 text-center">Core Values</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <ValueCard
-              icon={<Shield className="w-8 h-8" />}
-              title="Safety"
-              desc="We prioritize the safety of our team and clients above all else."
-            />
-            <ValueCard
-              icon={<Target className="w-8 h-8" />}
-              title="Precision"
-              desc="Accuracy is not just a goal; it's our standard operating procedure."
-            />
-            <ValueCard
-              icon={<Users className="w-8 h-8" />}
-              title="Integrity"
-              desc="We build honest relationships through transparent business practices."
-            />
-            <ValueCard
-              icon={<Award className="w-8 h-8" />}
-              title="Quality"
-              desc="Delivering superior results that stand the test of time."
-            />
-          </div>
-        </div>
-        <hr className="my-16 border-zinc-800" />
-
-
-
-        {/* our clien	ts */}
-        <div className="mb-16 overflow-hidden">
-          <h2 className="text-3xl font-bold uppercase text-slate-900 mb-12 text-center">
-            We worked with
-          </h2>
-
-          {/* Wrapper to hide overflow */}
-          <div className="relative flex overflow-hidden group">
-            {/* The Animated Track */}
-            <div className="flex w-max animate-scroll will-change-transform">
-              {/* Render logos twice for seamless looping */}
-              {[...clients, ...clients].map((client, index) => (
-                <div
-                  key={`${client.id}-${index}`}
-                  className="flex-shrink-0 w-64 h-40 mx-4 bg-white p-8 rounded-lg shadow-sm border border-slate-100 flex items-center justify-center hover:shadow-lg transition-shadow"
-                >
-                  <img
-                    src={client.image}
-                    alt={client.name}
-                    className="max-w-full max-h-full object-contain"
-                  />
+            <p className="mb-8 flex items-start gap-2 text-muted-foreground">
+              <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden />
+              <span>
+                Headquartered in{" "}
+                <strong className="font-semibold text-foreground">
+                  Chikrand, West Bengal 712304
+                </strong>{" "}
+                — serving manufacturing and process plants across the region.
+              </span>
+            </p>
+            <div className="mt-8 grid grid-cols-2 gap-6">
+              <div className="border border-border bg-muted p-6 text-center">
+                <div className="mb-2 text-4xl font-bold text-primary">20+</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  Years Experience
                 </div>
-              ))}
+              </div>
+              <div className="border border-border bg-muted p-6 text-center">
+                <div className="mb-2 text-4xl font-bold text-primary">500+</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  Projects Completed
+                </div>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
+
+        <Reveal className="mb-24 border border-border bg-muted p-8 md:p-12">
+          <h2 className="mb-4 text-3xl font-bold uppercase text-foreground">What we stand for</h2>
+          <div className="mb-6 h-1 w-20 bg-primary" />
+          <p className="mb-8 max-w-3xl leading-relaxed text-muted-foreground">
+            We are not a trading house or a paper contractor. Our crews fabricate, erect,
+            maintain, and hand over works that must perform under real industrial conditions —
+            heat, vibration, humidity, and production pressure.
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              "Industrial utility installation",
+              "Preventive & breakdown maintenance",
+              "PEB & structural steel packages",
+              "Pipeline fabrication & erection",
+              "Shutdown & turnaround support",
+              "On-site mechanical fitting",
+            ].map((item) => (
+              <div
+                key={item}
+                className="flex items-center gap-3 border border-border bg-card px-4 py-3 text-sm font-medium text-foreground"
+              >
+                <span className="h-1.5 w-1.5 shrink-0 bg-primary" />
+                {item}
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
+        <hr className="my-16 border-border" />
+
+        <div className="mb-16">
+          <Reveal className="mb-4 text-center">
+            <h2 className="text-3xl font-bold uppercase text-foreground">Core Values</h2>
+            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+              The standards we apply on every site visit, fabrication job, and handover.
+            </p>
+          </Reveal>
+          <Reveal
+            staggerChildren
+            className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4"
+          >
+            <ValueCard
+              icon={<Shield className="h-8 w-8" />}
+              title="Safety"
+              desc="Method statements, PPE discipline, and a zero-compromise stance on site hazards."
+            />
+            <ValueCard
+              icon={<Target className="h-8 w-8" />}
+              title="Precision"
+              desc="Fit-up, alignment, and welding that match drawings — not approximations."
+            />
+            <ValueCard
+              icon={<Users className="h-8 w-8" />}
+              title="Integrity"
+              desc="Honest scopes, transparent progress, and commitments we intend to keep."
+            />
+            <ValueCard
+              icon={<Award className="h-8 w-8" />}
+              title="Quality"
+              desc="Handovers that stand up to inspection, production load, and time."
+            />
+          </Reveal>
+        </div>
+
+        <hr className="my-16 border-border" />
+
+        <div className="mb-16 overflow-hidden">
+          <Reveal className="mb-4 text-center">
+            <h2 className="text-3xl font-bold uppercase text-foreground">
+              Clients we have worked with
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+              Trusted by industrial organisations that need dependable local execution.
+            </p>
+          </Reveal>
+
+          {clients.length > 0 ? (
+            <div className="group relative mt-12 flex overflow-hidden">
+              <div className="flex w-max animate-scroll will-change-transform">
+                {[...clients, ...clients].map((client, index) => (
+                  <div
+                    key={`${client.id}-${index}`}
+                    className="mx-4 flex h-40 w-64 flex-shrink-0 items-center justify-center border border-border bg-white p-8 shadow-sm transition-shadow hover:shadow-lg"
+                  >
+                    <img
+                      src={client.image}
+                      alt={client.name}
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="mt-8 text-center text-sm text-muted-foreground">Client logos loading…</p>
+          )}
+        </div>
+
+        <Reveal className="bg-hero px-8 py-12 text-center text-hero-foreground">
+          <h2 className="mb-3 text-2xl font-bold uppercase">Ready to work with us?</h2>
+          <p className="mx-auto mb-6 max-w-lg text-hero-foreground/65">
+            Share your project scope and we will respond with the right next step.
+          </p>
+          <Link href="/contact">
+            <span className="inline-flex cursor-pointer items-center bg-primary px-7 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground hover:bg-primary/90">
+              Contact our team <ArrowRight className="ml-2 h-4 w-4" />
+            </span>
+          </Link>
+        </Reveal>
       </div>
     </div>
   );
 }
 
-function ValueCard({ icon, title, desc }: any) {
+function ValueCard({
+  icon,
+  title,
+  desc,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  desc: string;
+}) {
   return (
-    <div className="bg-white p-8 rounded-lg shadow-sm border border-slate-100 text-center hover:shadow-lg transition-shadow">
-      <div className="w-16 h-16 bg-zinc-950 text-white rounded-full flex items-center justify-center mx-auto mb-6 ring-1 ring-zinc-800">
+    <div className="border border-border bg-card p-8 text-center shadow-sm transition-shadow hover:shadow-lg">
+      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center bg-hero text-hero-foreground ring-1 ring-border">
         {icon}
       </div>
-      <h3 className="text-xl font-bold uppercase mb-3 text-slate-800">{title}</h3>
-      <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
+      <h3 className="mb-3 text-xl font-bold uppercase text-foreground">{title}</h3>
+      <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
     </div>
   );
 }
-
-
