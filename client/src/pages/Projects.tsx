@@ -1,20 +1,10 @@
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import type { Project } from "@/types/api";
-import { apiUrl } from "@/lib/api";
 import { Link } from "wouter";
 import { MapPin } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { useProjects } from "@/hooks/use-projects";
 
 const COLUMNS = 3;
-
-async function fetchProjects(): Promise<Project[]> {
-  const response = await fetch(apiUrl("/api/projects"));
-  if (!response.ok) {
-    throw new Error("Failed to fetch projects");
-  }
-  return response.json();
-}
 
 /** How many “Updating soon” cells to fill the last incomplete row (at least one row if empty). */
 function comingSoonCount(projectCount: number) {
@@ -31,26 +21,7 @@ export default function Projects() {
     path: "/projects",
   });
 
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetchProjects()
-      .then((data) => {
-        if (!cancelled) setProjects(data);
-      })
-      .catch(() => {
-        if (!cancelled) setProjects([]);
-      })
-      .finally(() => {
-        if (!cancelled) setLoaded(true);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
+  const { data: projects = [], isLoading } = useProjects();
   const placeholders = comingSoonCount(projects.length);
 
   return (
@@ -66,7 +37,7 @@ export default function Projects() {
       </section>
 
       <div className="container mx-auto px-4 pb-24">
-        {!loaded ? (
+        {isLoading ? (
           <p className="py-16 text-center text-sm text-muted-foreground">Loading projects…</p>
         ) : (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 md:gap-6">

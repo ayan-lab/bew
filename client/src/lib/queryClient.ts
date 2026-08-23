@@ -1,4 +1,5 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { projectsQueryOptions } from "./projects-query";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -55,3 +56,5 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+queryClient.prefetchQuery(projectsQueryOptions);
