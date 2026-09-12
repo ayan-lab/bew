@@ -10,12 +10,14 @@ import { user as usersTable } from "./shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 import { uploadProfileImage } from "./cloudinary-upload";
-import { sendEnquiryEmail, sendReviewRequestEmail } from "./email/maileroo.js";
+import { sendEnquiryEmail, sendReviewRequestEmail } from "./email/maileroo";
 import {
   buildReviewActionUrl,
   verifyReviewActionToken,
   type ReviewAction,
 } from "./email/review-action-token";
+
+import { cacheGetJson, cacheSetJson } from "./cache/redis_cache";
 
 const profileUpload = multer({
   storage: multer.memoryStorage(),
@@ -107,11 +109,16 @@ export async function registerRoutes(
 
   app.get("/api/projects", async (_req, res) => {
     try {
+      const cachedProjects = await cacheGetJson("projects");
+      if (cachedProjects) {
+        return res.status(200).json(cachedProjects);
+      }
       const rows = await db.select().from(projectsTable);
-      res.status(200).json(rows);
+      await cacheSetJson("projects", rows);
+      return res.status(200).json(rows);
     } catch (err) {
       console.error("Projects error:", err);
-      res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   });
 
@@ -122,10 +129,15 @@ export async function registerRoutes(
     }
 
     try {
+      const cachedProject = await cacheGetJson(`project_${id}`);
+      if (cachedProject) {
+        return res.status(200).json(cachedProject);
+      }
       const rows = await db.select().from(projectsTable).where(eq(projectsTable.id, id)).limit(1);
       if (rows.length === 0) {
         return res.status(404).json({ message: "Project not found" });
       }
+      await cacheSetJson(`project_${id}`, rows[0]);
       return res.status(200).json(rows[0]);
     } catch (err) {
       console.error("Project detail error:", err);
@@ -209,11 +221,16 @@ export async function registerRoutes(
 
   app.get("/api/clients", async (_req, res) => {
     try {
+      const cachedClients = await cacheGetJson("clients");
+      if (cachedClients) {
+        return res.status(200).json(cachedClients);
+      }
       const rows = await db.select().from(clientsTable);
-      res.status(200).json(rows);
+      await cacheSetJson("clients", rows);
+      return res.status(200).json(rows);
     } catch (err) {
       console.error("Clients error:", err);
-      res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   });
 
@@ -348,11 +365,16 @@ export async function registerRoutes(
 
   app.get("/api/services", async (_req, res) => {
     try {
+      const cachedServices = await cacheGetJson("services");
+      if (cachedServices) {
+        return res.status(200).json(cachedServices);
+      }
       const rows = await db.select().from(services);
-      res.status(200).json(rows);
+      await cacheSetJson("services", rows);
+      return res.status(200).json(rows);
     } catch (err) {
       console.error("Services error:", err);
-      res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   });
 
