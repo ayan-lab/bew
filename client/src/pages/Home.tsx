@@ -1,5 +1,6 @@
 import {
   ArrowRight,
+  ArrowDown,
   Wrench,
   Hammer,
   Factory,
@@ -436,9 +437,7 @@ export default function Home() {
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-black/25" />
                 <div className="carousel-caption !bottom-0 !left-0 !right-0 !top-0 !m-0 flex h-full w-full items-end pb-16 pt-24 text-start md:items-center md:pb-24">
                   <div className="container mx-auto px-6 md:px-12 lg:px-16">
-                    <p className="hero-animate mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-primary md:text-sm">
-                      Baidya Engineering Works
-                    </p>
+                  
                     {idx === 0 ? (
                       <h1 className="hero-animate max-w-3xl text-3xl font-bold uppercase leading-tight text-hero-foreground sm:text-4xl md:text-5xl lg:text-[3.25rem]">
                         {slide.title}
@@ -464,10 +463,7 @@ export default function Home() {
                         </span>
                       </Link>
                     </div>
-                    <p className="hero-animate mt-6 flex items-center gap-2 text-sm text-hero-foreground/70">
-                      <MapPin className="h-4 w-4 text-primary" aria-hidden />
-                      Based in Chikrand, West Bengal · Serving industry statewide
-                    </p>
+                 
                   </div>
                 </div>
               </div>
