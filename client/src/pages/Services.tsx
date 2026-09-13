@@ -3,16 +3,33 @@ import {
   Wrench,
   Settings,
   ArrowRight,
-  ClipboardList,
-  HardHat,
+  ArrowUpRight,
   Building2,
-  CheckCircle2,
   Phone,
+  MoveUpRight,
 } from "lucide-react";
 import { Link } from "wouter";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { Reveal } from "@/components/Reveal";
 import { FaqJsonLd } from "@/components/FaqJsonLd";
+
+const PROCESS_STEPS = [
+  {
+    number: "01",
+    title: "Understand",
+    desc: "Site walk, drawings, constraints, and a clear scope of work.",
+  },
+  {
+    number: "02",
+    title: "Engineer",
+    desc: "Method statements, material planning, and a practical delivery programme.",
+  },
+  {
+    number: "03",
+    title: "Execute",
+    desc: "Disciplined fabrication, installation, testing, and safe handover.",
+  },
+] as const;
 
 const SERVICE_FAQS = [
   {
@@ -121,47 +138,61 @@ export default function Services() {
         </Reveal>
       </div>
 
-      <section className="bg-muted py-24">
-        <div className="container mx-auto px-4">
-          <Reveal className="mb-6 text-center">
-            <h2 className="mb-4 text-3xl font-bold uppercase text-foreground">Our Process</h2>
-            <div className="mx-auto mb-4 h-1 w-20 bg-primary" />
-            <p className="mx-auto max-w-2xl text-muted-foreground">
-              A straightforward path from first site visit to handover — so scopes stay clear
-              and schedules stay honest.
-            </p>
-          </Reveal>
+      <section className="bg-hero py-24 text-hero-foreground md:py-32">
+        <div className="container mx-auto px-4 md:px-8 lg:px-16">
+          <div className="grid items-center gap-16 lg:grid-cols-2 lg:gap-24">
+            <Reveal>
+              <p className="mb-6 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-hero-foreground/50">
+                <span className="h-[2px] w-8 bg-primary" aria-hidden />
+                How we work
+              </p>
+              <h2
+                className="mb-6 text-4xl font-normal normal-case leading-[1.08] text-hero-foreground sm:text-5xl md:text-6xl lg:text-[4.5rem]"
+                style={{
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Clear thinking.
+                <span className="mt-1 block">
+                  <span className="italic text-primary font-bold" style={{ fontFamily: "'Instrument Serif', Georgia, serif", letterSpacing: "0.04em" }}>Solid</span> execution.
+                </span>
+              </h2>
+              <p className="mb-10 max-w-md text-[15px] leading-relaxed text-hero-foreground/55">
+                Industrial projects do not need more noise. They need a partner who
+                understands the site, owns the details, and keeps the work moving safely.
+              </p>
+              <Link href="/contact">
+                <span className="inline-flex cursor-pointer items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-hero-foreground/50 transition-colors hover:text-primary">
+                  Work with our team
+                  <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.75} />
+                </span>
+              </Link>
+            </Reveal>
 
-          <Reveal
-            staggerChildren
-            className="relative mx-auto mt-16 flex max-w-5xl flex-col items-stretch justify-between md:flex-row md:items-start"
-          >
-            <div className="absolute left-0 right-0 top-10 hidden h-0.5 bg-secondary md:block" />
-            <ProcessStep
-              number="01"
-              title="Consultation"
-              desc="Walk the site, clarify scope, constraints, and safety requirements."
-              icon={<ClipboardList className="h-6 w-6" />}
-            />
-            <ProcessStep
-              number="02"
-              title="Planning"
-              desc="Method statements, material lists, crew plan, and programme."
-              icon={<Settings className="h-6 w-6" />}
-            />
-            <ProcessStep
-              number="03"
-              title="Execution"
-              desc="Fabrication and site works with daily progress and QA checks."
-              icon={<HardHat className="h-6 w-6" />}
-            />
-            <ProcessStep
-              number="04"
-              title="Delivery"
-              desc="Testing, punch-list closeout, and documented handover."
-              icon={<CheckCircle2 className="h-6 w-6" />}
-            />
-          </Reveal>
+            <Reveal staggerChildren stagger={0.1}>
+              {PROCESS_STEPS.map((step) => (
+                <div
+                  key={step.number}
+                  className="grid grid-cols-[2.75rem_1fr] gap-4 border-t border-hero-foreground/15 py-8 last:border-b md:grid-cols-[3.5rem_1fr] md:gap-6 md:py-9"
+                >
+                  <span className="pt-1 text-[11px] font-semibold tracking-[0.14em] text-primary">
+                    {step.number}
+                  </span>
+                  <div>
+                    <h3
+                      className="mb-2 text-xl font-medium normal-case tracking-normal text-hero-foreground md:text-[1.35rem]"
+                      style={{ fontFamily: "'Roboto', sans-serif", letterSpacing: "0" }}
+                    >
+                      {step.title}
+                    </h3>
+                    <p className="max-w-sm text-[15px] leading-relaxed text-hero-foreground/55">
+                      {step.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -197,15 +228,10 @@ export default function Services() {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/contact">
               <span className="inline-flex cursor-pointer items-center bg-primary px-7 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground hover:bg-primary/90">
-                Request a quote <ArrowRight className="ml-2 h-4 w-4" />
+                start a conversation <MoveUpRight className="ml-2 h-4 w-4" />
               </span>
             </Link>
-            <a
-              href="tel:+919874751736"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-hero-foreground"
-            >
-              <Phone className="h-4 w-4" /> +91 987 475 1736
-            </a>
+           
           </div>
         </Reveal>
       </section>
@@ -255,25 +281,3 @@ function ServiceDetailCard({
   );
 }
 
-function ProcessStep({
-  number,
-  title,
-  desc,
-  icon,
-}: {
-  number: string;
-  title: string;
-  desc: string;
-  icon: React.ReactNode;
-}) {
-  return (
-    <div className="z-10 my-4 flex w-full flex-col items-center border border-border bg-card p-6 text-center shadow-sm md:my-0 md:w-48">
-      <div className="mb-4 flex h-12 w-12 items-center justify-center bg-hero text-lg font-bold text-hero-foreground shadow-lg shadow-black/25 ring-1 ring-border">
-        {number}
-      </div>
-      <h3 className="text-sm font-bold uppercase">{title}</h3>
-      <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{desc}</p>
-      <div className="mt-3 text-primary opacity-60">{icon}</div>
-    </div>
-  );
-}

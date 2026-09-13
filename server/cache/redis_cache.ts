@@ -81,6 +81,7 @@ export async function cacheGetJson<T>(key: string): Promise<T | null> {
     if (!raw) {
       return null;
     }
+    console.log("Redis get successful");
     return JSON.parse(raw) as T;
   } catch (err) {
     console.error("Redis get failed:", err);
@@ -100,7 +101,21 @@ export async function cacheSetJson(
 
   try {
     await redis.set(key, JSON.stringify(value), { EX: ttlSeconds });
+    console.log("Redis set successful");
   } catch (err) {
     console.error("Redis set failed:", err);
+  }
+}
+
+export async function cacheDeleteJson(key: string): Promise<void> {
+  const redis = await getRedisClient();
+  if (!redis) {
+    return;
+  }
+  try {
+    await redis.del(key);
+    console.log("Redis delete successful");
+  } catch (err) {
+    console.error("Redis delete failed:", err);
   }
 }

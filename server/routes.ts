@@ -17,7 +17,7 @@ import {
   type ReviewAction,
 } from "./email/review-action-token";
 
-import { cacheGetJson, cacheSetJson } from "./cache/redis_cache";
+import { cacheDeleteJson, cacheGetJson, cacheSetJson } from "./cache/redis_cache.ts";
 
 const profileUpload = multer({
   storage: multer.memoryStorage(),
@@ -373,13 +373,19 @@ export async function registerRoutes(
       await cacheSetJson("services", rows);
       return res.status(200).json(rows);
     } catch (err) {
-      console.error("Services error:", err);
       return res.status(500).json({ message: "Internal server error" });
     }
   });
 
+  app.post("/api/invalidate/cache/projects", async (req, res) => {
+    await cacheDeleteJson("projects");
+    console.log("Projects cache invalidated");
+    return res.status(200).json({ message: "Projects cache invalidated" });
+  });
+
   return httpServer;
 }
+
 
 
   

@@ -92,7 +92,7 @@ export default function Contact() {
                   <MapPin className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="mb-1 text-lg font-bold">Our Location</h3>
+                  <h3 className="mb-1 text-lg font-bold">Location</h3>
                   <p className="text-hero-foreground/65">
                     Chikrand
                     <br />
@@ -106,7 +106,7 @@ export default function Contact() {
                   <Phone className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="mb-1 text-lg font-bold">Phone Number</h3>
+                  <h3 className="mb-1 text-lg font-bold">Phone</h3>
                   <a
                     href="tel:+919874751736"
                     className="text-hero-foreground/70 transition-colors hover:text-primary"
@@ -125,7 +125,7 @@ export default function Contact() {
                   <Mail className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="mb-1 text-lg font-bold">Email Address</h3>
+                  <h3 className="mb-1 text-lg font-bold">Email</h3>
                   <a
                     href="mailto:baidyaengineering@gmail.com"
                     className="break-all text-hero-foreground/70 transition-colors hover:text-primary"

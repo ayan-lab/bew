@@ -7,6 +7,15 @@ import {
   ChevronLeft,
   ChevronRight,
   MapPin,
+  ArrowUpRightFromCircle,
+  ArrowRightFromLine,
+  ArrowRightLeft,
+  ArrowRightSquare,
+  MoveUpRight,
+  Shield,
+  Target,
+  Clock,
+  Users,
 } from "lucide-react";
 import { Link } from "wouter";
 import { useRef, useEffect, useState, useCallback } from "react";
@@ -18,6 +27,8 @@ import { Reveal } from "@/components/Reveal";
 import { FaqJsonLd } from "@/components/FaqJsonLd";
 import { ensureGsap, prefersReducedMotion } from "@/lib/gsap";
 import { INSIGHTS } from "@/data/insights";
+
+import CountUp from "@/components/CountUp";
 
 const HERO_VIDEO =
   "https://res.cloudinary.com/dqhnt5mus/video/upload/q_auto:best,f_auto,w_1280/v1777366937/download_lckhyt.mp4";
@@ -54,19 +65,11 @@ const HERO_CAROUSEL_ID = "heroCarousel";
 
 const INDUSTRIES = [
   "Manufacturing plants",
-  "Chemical & process industries",
-  "Warehousing & logistics",
+  "Chemical & process",
   "Power & utilities",
-  "Food & beverage facilities",
-  "Commercial & industrial sheds",
-];
-
-const SERVICE_AREAS = [
-  "Chikrand & Hooghly district",
-  "Howrah industrial belt",
-  "Kolkata & surrounding plants",
-  "Warehouses across South Bengal",
-  "Process units statewide (by project)",
+  "Warehousing & logistics",
+  "Food & beverage",
+  "Commercial sheds",
 ];
 
 const ENGAGEMENT_STEPS = [
@@ -100,18 +103,22 @@ const WHY_POINTS = [
   {
     title: "Safety first",
     text: "Site protocols, PPE discipline, and method statements that protect crews and client assets.",
+    icon: Shield,
   },
   {
     title: "Precision engineering",
     text: "Fabrication and installation to drawing, with fit-up and QA checks before critical lifts.",
+    icon: Target,
   },
   {
     title: "Timely delivery",
     text: "Realistic programmes, material tracking, and crew planning that respect shutdown windows.",
+    icon: Clock,
   },
   {
     title: "Experienced team",
     text: "Welders, fitters, and supervisors with decades of combined industrial site experience.",
+    icon: Users,
   },
 ] as const;
 
@@ -165,7 +172,6 @@ export default function Home() {
   const [index, setIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
-  const [serveTab, setServeTab] = useState<"industries" | "coverage">("industries");
 
   useEffect(() => {
     isAnimatingRef.current = isAnimating;
@@ -448,8 +454,8 @@ export default function Home() {
                     <div className="hero-animate mt-8 flex flex-wrap gap-3">
                       <Link href="/contact">
                         <span className="inline-flex cursor-pointer items-center bg-primary px-6 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground shadow-lg transition-colors hover:scale-[1.02] hover:bg-primary/90">
-                          Request a quote
-                          <ArrowRight className="ml-2 h-4 w-4" />
+                          Discuss your requirement
+                          <MoveUpRight className="ml-2 h-4 w-4" />
                         </span>
                       </Link>
                       <Link href="/projects">
@@ -496,15 +502,29 @@ export default function Home() {
           className="container mx-auto grid grid-cols-2 gap-6 px-6 py-10 md:grid-cols-4 md:px-12 lg:px-16"
         >
           {[
-            { value: "20+", label: "Years on site" },
-            { value: "500+", label: "Projects delivered" },
-            { value: "2005", label: "Established" },
-            { value: "WB", label: "West Bengal based" },
+            { value: "20", ad_on: "+", label: "Years on site" },
+            { value: "500", ad_on: "+", label: "Projects delivered" },
+            { value: "2005", ad_on: "", label: "Established" },
+            { value: "01", ad_on: "", label: "Partner from scope to handover" },
           ].map((stat) => (
-            <div key={stat.label} data-stat className="text-center md:text-left">
-              <div className="text-3xl font-bold text-primary md:text-4xl">{stat.value}</div>
-              <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                {stat.label}
+            <div key={stat.label} data-stat className="text-center md:text-left border-r border-border last:border-r-1">
+              <div className="text-3xl font-bold md:text-4xl">
+                {stat.value !== "2005" && stat.value !== "01" ? (
+                  <CountUp
+                    from={0}
+                    to={Number(stat.value)}
+                    direction="up"
+                    duration={1.5}
+                    className="count-up-text"
+                    delay={0}
+                  />
+                ) : (
+                  stat.value
+                )}
+                <span className="text-primary">{stat.ad_on}</span>
+              </div>
+                <div className="mt-1 text-[5px] md:text-xs font-semibold uppercase tracking-wider text-muted-foreground ">
+                  {stat.label}
               </div>
             </div>
           ))}
@@ -512,294 +532,229 @@ export default function Home() {
       </section>
 
       {/* What we do */}
-      <section className="bg-card py-24">
-        <div className="container mx-auto px-8 py-8 md:px-12 lg:px-16">
-          <Reveal className="mb-6 flex items-end justify-between gap-4">
+      <section className="bg-white py-20">
+        <div className="container mx-auto px-8 md:px-12 lg:px-16">
+          <Reveal className="grid items-center gap-10 pb-16 lg:grid-cols-2 lg:gap-16">
             <div>
-              <h2
-                className="text-3xl font-bold normal-case text-foreground"
-                style={{ fontFamily: "Roboto" }}
-              >
-                What we do
-              </h2>
-              <p className="mt-2 max-w-2xl text-muted-foreground">
-                End-to-end industrial contracting — from utility installation and steel
-                fabrication to planned maintenance and pipeline erection.
+              <p className="mb-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#7A7A78]">
+                <span className="h-[2px] w-8 bg-[#E4572E]" aria-hidden />
+                What we do 
               </p>
+              <h2
+                className="text-4xl font-normal normal-case leading-[1.08] text-[#1A1A1A] sm:text-5xl md:text-6xl lg:text-[4.5rem]"
+                style={{ letterSpacing: "-0.02em" }}
+              >
+                Industrial work,
+                <span className="mt-1 block text-[#9A9A98]">done properly.</span>
+              </h2>
             </div>
-            <div className="flex shrink-0 gap-2">
+            <p className="max-w-md text-[15px] leading-relaxed text-[#6F6F6D] lg:justify-self-end">
+              From a single maintenance package to an end-to-end industrial
+              build, our team brings practical expertise, clear communication,
+              and accountable execution.
+            </p>
+          </Reveal>
+        </div>
+
+        <div className="border-t border-black/10"><br/>
+          <div className="container mx-auto px-8 md:px-12 lg:px-16">
+            <div className="relative">
               <button
                 type="button"
                 onClick={prevSlide}
                 aria-label="Previous slide"
-                className="slider-nav-btn flex h-7 w-7 items-center justify-center border border-border bg-card text-muted-foreground"
+                className="slider-nav-btn absolute left-3 top-[200px] z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center border border-black/15 bg-[#F3F1EC] text-[#6F6F6D]"
               >
-                <ChevronLeft className="h-3 w-3" strokeWidth={1.5} />
+                <ChevronLeft className="h-3.5 w-3.5" strokeWidth={1.5} />
               </button>
               <button
                 type="button"
                 onClick={nextSlide}
                 aria-label="Next slide"
-                className="slider-nav-btn flex h-7 w-7 items-center justify-center border border-border bg-card text-muted-foreground"
+                className="slider-nav-btn absolute right-3 top-[200px] z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center border border-black/15 bg-[#F3F1EC] text-[#6F6F6D]"
               >
-                <ChevronRight className="h-3 w-3" strokeWidth={1.5} />
+                <ChevronRight className="h-3.5 w-3.5" strokeWidth={1.5} />
               </button>
-            </div>
-          </Reveal>
 
-          <div className="w-full overflow-hidden">
-            <div ref={trackRef} className="flex">
-              {items.map((service, idx) => (
-                <div
-                  key={`${service.uuid ?? service.id}-${idx}`}
-                  className="slide-card h-full min-w-full p-2 sm:min-w-[50%] lg:min-w-[33.333%]"
-                >
-                  <div className="h-full overflow-hidden border bg-card">
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="h-[400px] w-full object-cover"
-                    />
-                    <div className="p-5">
-                      <h3 className="mb-1 text-xl font-bold">{service.title}</h3>
-                      <p className="text-muted-foreground">{service.description}</p>
+              <div className="w-full overflow-hidden">
+                <div ref={trackRef} className="flex">
+                  {items.map((service, idx) => (
+                    <div
+                      key={`${service.uuid ?? service.id}-${idx}`}
+                      className="slide-card h-full min-w-full sm:min-w-[50%] lg:min-w-[33.333%]"
+                    >
+                      <div className="h-full overflow-hidden border-r border-black/10 bg-transparent">
+                        <img
+                          src={service.image}
+                          alt={service.title}
+                          className="h-[400px] w-full object-cover"
+                        />
+                        <div className="p-5">
+                          <h3 className="mb-1 text-xl font-bold normal-case tracking-normal text-[#1A1A1A]">
+                            {service.title}
+                          </h3>
+                          <p className="text-[#6F6F6D]">{service.description}</p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
-
-          <div className="mt-10 text-center">
-            <Link href="/services">
-              <span className="inline-flex cursor-pointer items-center text-sm font-bold uppercase tracking-wider text-primary hover:underline">
-                Explore all services <ArrowRight className="ml-2 h-4 w-4" />
-              </span>
-            </Link>
+            <br/><div className="border-t border-black/20"><br/></div>
           </div>
         </div>
       </section>
 
       {/* Expertise */}
-      <section className="bg-muted py-24">
+      <section className="bg-white py-15">
         <div className="container mx-auto px-8 md:px-12 lg:px-16">
-          <Reveal className="mx-auto mb-16 max-w-3xl text-center">
-            <h2 className="mb-4 text-3xl font-bold uppercase text-foreground">Our Expertise</h2>
-            <div className="mx-auto mb-6 h-1 w-24" />
-            <p className="text-lg text-muted-foreground">
-              Four pillars of work that cover the full industrial project lifecycle — from
-              greenfield sheds to brownfield plant upgrades.
+          <Reveal className="grid items-center gap-10 pb-16 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="mb-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#7A7A78]">
+                <span className="h-[2px] w-8 bg-[#E4572E]" aria-hidden />
+                Expertise
+              </p>
+              <h2
+                className="text-4xl font-normal normal-case leading-[1.08] text-[#1A1A1A] sm:text-5xl md:text-6xl lg:text-[4.5rem]"
+                style={{  letterSpacing: "-0.02em" }}
+              >
+                Four pillars,
+                <span className="mt-1 block text-[#9A9A98]">one contractor.</span>
+              </h2>
+            </div>
+            <p className="max-w-md text-[15px] leading-relaxed text-[#6F6F6D] lg:justify-self-end">
+              Construction, fabrication, maintenance, and mechanical work —
+              covering the full industrial project lifecycle, from greenfield
+              sheds to brownfield plant upgrades.
             </p>
           </Reveal>
-
-          <Reveal staggerChildren className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-            <ServiceCard
-              icon={<Hammer className="h-10 w-10" />}
-              title="Construction"
-              desc="Industrial and commercial structural works — managed for plant environments."
-              href="/services"
-            />
-            <ServiceCard
-              icon={<Factory className="h-10 w-10" />}
-              title="Fabrication"
-              desc="Custom steel fabrication, structural components, and shop-to-site welding to drawing and code."
-              href="/services"
-            />
-            <ServiceCard
-              icon={<Wrench className="h-10 w-10" />}
-              title="Maintenance"
-              desc="Preventive programmes, breakdown response, equipment overhauls, and shutdown execution."
-              href="/services"
-            />
-            <ServiceCard
-              icon={<Settings className="h-10 w-10" />}
-              title="Mechanical"
-              desc="Mechanical installs, utility tie-ins, and precision alignment for process and plant equipment."
-              href="/services"
-            />
-          </Reveal>
         </div>
-      </section>
 
-      {/* Industries + coverage — centered tabs */}
-      <section className="bg-[#F2F7F4] pb-24 pt-8 dark:bg-muted">
-        <div className="container mx-auto px-8 md:px-12 lg:px-16">
-          <Reveal className="mb-10 flex flex-wrap items-center justify-center gap-8 md:gap-14">
-            {(
-              [
-                { id: "industries" as const, label: "Industries we serve" },
-                { id: "coverage" as const, label: "Service coverage" },
-              ] as const
-            ).map((tab) => {
-              const active = serveTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setServeTab(tab.id)}
-                  className={`relative pb-3 text-lg font-bold normal-case tracking-normal transition-colors md:text-2xl ${
-                    active
-                      ? "text-[#E4572E]"
-                      : "text-muted-foreground/55 hover:text-muted-foreground"
-                  }`}
-                >
-                  {tab.label}
-                  <span
-                    className={`absolute bottom-0 left-0 h-[2px] w-full transition-colors ${
-                      active ? "bg-[#E4572E]" : "bg-transparent"
-                    }`}
-                  />
-                </button>
-              );
-            })}
-          </Reveal>
-
-          <Reveal>
-            {serveTab === "industries" ? (
-              <div>
-                <p className="mx-auto mb-10 max-w-2xl text-center text-muted-foreground">
-                  We work alongside plant owners, project managers, and OEMs who need a
-                  reliable local contractor for utility, structural, and maintenance scopes
-                  in and around West Bengal.
-                </p>
-                <div className="relative">
-                  <button
-                    type="button"
-                    aria-label="Show service coverage"
-                    onClick={() => setServeTab("coverage")}
-                    className="absolute -left-2 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center bg-[#E4572E] text-white md:-left-4 md:flex"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  <button
-                    type="button"
-                    aria-label="Show service coverage"
-                    onClick={() => setServeTab("coverage")}
-                    className="absolute -right-2 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center bg-[#E4572E] text-white md:-right-4 md:flex"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                  <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {INDUSTRIES.map((name) => (
-                      <li
-                        key={name}
-                        className="flex min-h-[96px] items-center justify-center bg-card px-6 py-8 text-center text-sm font-semibold text-foreground shadow-sm"
-                      >
-                        {name}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            ) : (
-              <div className="mx-auto max-w-3xl">
-                <p className="mb-8 text-center leading-relaxed text-muted-foreground">
-                  Based in{" "}
-                  <strong className="font-semibold text-foreground">
-                    Chikrand, West Bengal 712304
-                  </strong>
-                  , our crews routinely mobilise across the industrial belts of South Bengal —
-                  with statewide coverage for larger fabrication and PEB packages.
-                </p>
-                <div className="relative">
-                  <button
-                    type="button"
-                    aria-label="Show industries"
-                    onClick={() => setServeTab("industries")}
-                    className="absolute -left-2 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center bg-[#E4572E] text-white md:-left-4 md:flex"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  <button
-                    type="button"
-                    aria-label="Show industries"
-                    onClick={() => setServeTab("industries")}
-                    className="absolute -right-2 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center bg-[#E4572E] text-white md:-right-4 md:flex"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                  <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    {SERVICE_AREAS.map((area) => (
-                      <li
-                        key={area}
-                        className="flex items-center gap-3 bg-card px-5 py-5 text-sm font-medium text-foreground shadow-sm"
-                      >
-                        <MapPin className="h-4 w-4 shrink-0 text-[#E4572E]" aria-hidden />
-                        {area}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <p className="mt-8 text-center text-sm text-muted-foreground">
-                  Not sure if we cover your site?{" "}
-                  <Link
-                    href="/contact"
-                    className="font-semibold text-[#E4572E] underline underline-offset-4"
-                  >
-                    Know More
-                  </Link>
-                </p>
-              </div>
-            )}
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Why choose us — about-style composition */}
-      <section className="bg-[#F2F7F4] py-24 dark:bg-card">
-        <div className="container mx-auto px-8 md:px-12 lg:px-16">
-          <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
-            <Reveal className="lg:col-span-7">
-              <p className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-[#E4572E]">
-                Why choose us?
-              </p>
-              <h2 className="mb-6 text-3xl font-bold normal-case tracking-normal text-foreground md:text-4xl lg:text-[2.75rem] lg:leading-tight">
-                Industrial work you can plan production around.
-              </h2>
-              <p className="mb-4 text-lg font-semibold leading-relaxed text-foreground">
-                Combining disciplined site execution, fabrication quality, and crew
-                experience to protect your uptime.
-              </p>
-              <p className="mb-8 max-w-xl leading-relaxed text-muted-foreground">
-                Clients return to Baidya Engineering Works because we treat every weld,
-                alignment, and handover as part of their production risk — not just a
-                checklist item. Since 2005 we have delivered utility, PEB, pipeline, and
-                maintenance scopes across West Bengal plants.
-              </p>
-              <Link href="/about">
-                <span className="text-sm font-semibold text-[#E4572E] underline underline-offset-4">
-                  Know More
-                </span>
-              </Link>
-
-              <div className="mt-12 grid gap-8 sm:grid-cols-2">
-                {WHY_POINTS.map((item) => (
-                  <div key={item.title}>
-                    <h3 className="mb-2 text-lg font-bold normal-case tracking-normal text-foreground">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{item.text}</p>
-                  </div>
-                ))}
-              </div>
+        <div>
+          <div className="container mx-auto px-8 md:px-12 lg:px-16">
+            <Reveal
+              staggerChildren
+              className="grid grid-cols-1 border-y border-black/10 md:grid-cols-2 lg:grid-cols-4"
+            >
+              <ServiceCard
+                icon={<Hammer className="h-10 w-10" />}
+                title="Construction"
+                desc="Industrial and commercial structural works — managed for plant environments."
+                href="/services"
+              />
+              <ServiceCard
+                icon={<Factory className="h-10 w-10" />}
+                title="Fabrication"
+                desc="Custom steel fabrication, structural components, and shop-to-site welding to drawing and code."
+                href="/services"
+              />
+              <ServiceCard
+                icon={<Wrench className="h-10 w-10" />}
+                title="Maintenance"
+                desc="Preventive programmes, breakdown response, equipment overhauls, and shutdown execution."
+                href="/services"
+              />
+              <ServiceCard
+                icon={<Settings className="h-10 w-10" />}
+                title="Mechanical"
+                desc="Mechanical installs, utility tie-ins, and precision alignment for process and plant equipment."
+                href="/services"
+              />
             </Reveal>
+          </div>
+        </div>
+        
+  
+      </section>
 
-            <Reveal className="grid grid-cols-2 gap-4 lg:col-span-5" delay={0.08}>
-              <img
-                src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=1000"
-                alt="Industrial construction site with steel structure"
-                className="col-span-2 h-56 w-full object-cover shadow-lg md:h-64"
-              />
-              <img
-                src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&q=80&w=1000"
-                alt="Engineers reviewing plant equipment"
-                className="h-40 w-full object-cover shadow-lg md:h-48"
-              />
-              <img
-                src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=1000"
-                alt="Plant technicians coordinating on the shop floor"
-                className="mt-8 h-40 w-full object-cover shadow-lg md:h-48"
-              />
+      {/* Industries we serve */}
+      <section className="bg-white py-24">
+        <div className="container mx-auto px-8 md:px-12 lg:px-16">
+          <Reveal className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+            <div>
+              <p className="mb-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#7A7A78]">
+                <span className="h-[2px] w-8 bg-[#E4572E]" aria-hidden />
+                Where we work
+              </p>
+              <h2
+                className="text-4xl font-normal normal-case leading-[1.08] text-[#1A1A1A] sm:text-5xl md:text-6xl lg:text-[4.5rem]"
+                style={{
+                 
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Made for
+                <span className="mt-1 block text-[#9A9A98]">industry.</span>
+              </h2>
+            </div>
+
+            <ul className="grid grid-cols-1 border-y border-black/10 sm:grid-cols-2">
+              {INDUSTRIES.map((name) => (
+                <li
+                  key={name}
+                  className="border-black/10 px-6 py-4 text-sm text-[#6F6F6D] max-sm:border-b max-sm:last:border-b-0 sm:px-8 sm:py-5 sm:odd:border-r sm:[&:nth-child(n+3)]:border-t"
+                >
+                  {name}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </section>
+      
+      <br/><div className="border-t border-black/10 w-[75vw] mx-auto"><br/></div>
+
+      {/* Why choose us */}
+      <section className="bg-white py-20">
+        <div className="container mx-auto px-8 md:px-12 lg:px-16">
+          <Reveal className="grid items-center gap-10 pb-16 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="mb-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#7A7A78]">
+                <span className="h-[2px] w-8 bg-[#E4572E]" aria-hidden />
+                Why choose us
+              </p>
+              <h2
+                className="text-4xl font-normal normal-case leading-[1.08] text-[#1A1A1A] sm:text-5xl md:text-6xl lg:text-[4.5rem]"
+                style={{ letterSpacing: "-0.02em" }}
+              >
+                Industrial work,
+                <span className="mt-1 block text-[#9A9A98]">you can plan around.</span>
+              </h2>
+            </div>
+            <p className="max-w-md text-[15px] leading-relaxed text-[#6F6F6D] lg:justify-self-end">
+              Combining disciplined site execution, fabrication quality, and crew
+              experience to protect your uptime. Clients return because we treat
+              every weld, alignment, and handover as part of their production risk.
+            </p>
+          </Reveal>
+        </div>
+
+        <div>
+          <div className="container mx-auto px-8 md:px-12 lg:px-16">
+            <Reveal
+              staggerChildren
+              className="grid grid-cols-1 border-y border-black/10 md:grid-cols-2 lg:grid-cols-4"
+            >
+              {WHY_POINTS.map((point) => {
+                const Icon = point.icon;
+                return (
+                  <div
+                    key={point.title}
+                    className="border-black/10 max-md:border-b max-md:last:border-b-0 md:border-r md:[&:nth-child(2n)]:border-r-0 md:[&:nth-child(n+3)]:border-t lg:border-r lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(4n)]:border-r-0 lg:[&:nth-child(n+3)]:border-t-0"
+                  >
+                    <div className="flex h-full flex-col p-8">
+                      <div className="mb-6 flex h-16 w-16 shrink-0 items-center justify-center bg-[#E4572E]/10 text-[#E4572E]">
+                        <Icon className="h-10 w-10" />
+                      </div>
+                      <h3 className="mb-3 text-xl font-bold normal-case tracking-normal text-[#1A1A1A]">
+                        {point.title}
+                      </h3>
+                      <p className="leading-relaxed text-[#6F6F6D]">{point.text}</p>
+                    </div>
+                  </div>
+                );
+              })}
             </Reveal>
           </div>
         </div>
@@ -886,29 +841,42 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="relative overflow-hidden bg-hero py-20 text-hero-foreground">
-        <div className="pointer-events-none absolute -right-20 top-0 h-64 w-64 bg-primary/20 blur-3xl" />
-        <Reveal className="container relative z-10 mx-auto px-8 text-center md:px-12">
-          <h2 className="mb-4 text-3xl font-bold uppercase md:text-4xl">
-            Planning a plant project?
-          </h2>
-          <p className="mx-auto mb-8 max-w-2xl text-lg text-hero-foreground/70">
-            Tell us about your scope — utilities, PEB, pipelines, or maintenance — and our
-            team will respond with a clear next step and estimate timeline.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
+      <section className="bg-[#E4572E] py-20 text-white md:py-28">
+        <Reveal className="container mx-auto grid items-center gap-10 px-8 md:px-12 lg:grid-cols-2 lg:gap-16 lg:px-16">
+          <div>
+            <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/80">
+              Have a project in mind?
+            </p>
+            <h2
+              className="text-5xl font-normal normal-case leading-none text-white sm:text-6xl md:text-7xl lg:text-[5.5rem]"
+              style={{ letterSpacing: "-0.02em" }}
+            >
+              Let's build
+            </h2>
+          </div>
+          <div className="max-w-md">
+            <p className="mb-8 text-[15px] leading-relaxed text-white/90 md:text-lg">
+              Share your requirement, drawings, or site details.
+              <br />
+              We'll come back with the right next step.
+            </p>
             <Link href="/contact">
-              <span className="inline-flex cursor-pointer items-center bg-primary px-8 py-3.5 text-sm font-bold uppercase tracking-widest text-primary-foreground shadow-lg transition-colors hover:scale-[1.02] hover:bg-primary/90">
-                Get a consultation
-                <ArrowRight className="ml-2 h-4 w-4" />
+              <span className="inline-flex cursor-pointer items-center bg-[#1A1A1A] px-6 py-3.5 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-black">
+                Start a conversation
+                <MoveUpRight className="ml-2 h-4 w-4" strokeWidth={1.75} />
               </span>
             </Link>
-            <a
-              href="tel:+919874751736"
-              className="inline-flex items-center text-sm font-semibold uppercase tracking-wider text-primary hover:text-hero-foreground"
-            >
-              Or call +91 987 475 1736
-            </a>
+            <div className="mt-8 space-y-1 text-sm text-white/90">
+              <a href="tel:+919874751736" className="block transition-colors hover:text-white">
+                +91 987 475 1736
+              </a>
+              <a
+                href="mailto:baidyaengineering@gmail.com"
+                className="block transition-colors hover:text-white"
+              >
+                baidyaengineering@gmail.com
+              </a>
+            </div>
           </div>
         </Reveal>
       </section>
@@ -928,17 +896,20 @@ function ServiceCard({
   href: string;
 }) {
   return (
-    <Link href={href}>
-      <div className="group cursor-pointer border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl">
-        <div className="mb-6 flex h-16 w-16 items-center justify-center bg-primary/10 text-primary">
+    <Link
+      href={href}
+      className="group block h-full border-black/10 transition-colors hover:bg-black/[0.04] max-md:border-b max-md:last:border-b-0 md:border-r md:[&:nth-child(2n)]:border-r-0 md:[&:nth-child(n+3)]:border-t lg:border-r lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(4n)]:border-r-0 lg:[&:nth-child(n+3)]:border-t-0"
+    >
+      <div className="flex h-full cursor-pointer flex-col p-8">
+        <div className="mb-6 flex h-16 w-16 shrink-0 items-center justify-center bg-[#E4572E]/10 text-[#E4572E]">
           {icon}
         </div>
-        <h3 className="mb-3 text-xl font-bold uppercase text-foreground transition-colors group-hover:text-primary">
+        <h3 className="mb-3 text-xl font-bold normal-case tracking-normal text-[#1A1A1A] transition-colors group-hover:text-[#E4572E]">
           {title}
         </h3>
-        <p className="mb-6 leading-relaxed text-muted-foreground">{desc}</p>
-        <div className="flex items-center text-sm font-bold uppercase tracking-wider text-primary transition-transform group-hover:translate-x-2">
-          Learn more <ArrowRight className="ml-2 h-4 w-4" />
+        <p className="mb-6 flex-1 leading-relaxed text-[#6F6F6D]">{desc}</p>
+        <div className="mt-auto flex items-center text-slate-600 text-xs font-bold uppercase tracking-wider transition-transform group-hover:translate-x-2 hover:text-[#E4572E]">
+          Learn more <MoveUpRight className="ml-2 h-4 w-3 text-[#E4572E]" />
         </div>
       </div>
     </Link>

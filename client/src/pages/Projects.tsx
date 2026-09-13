@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { MapPin } from "lucide-react";
+import { Building2 } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useProjects } from "@/hooks/use-projects";
 
@@ -56,21 +56,16 @@ export default function Projects() {
                       className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
 
-                    {/* Dark veil: always on mobile, hover-only on md+ */}
-                    <div
-                      className="absolute inset-0 z-[1] bg-black/55 transition-colors duration-500 ease-out md:bg-black/0 md:group-hover:bg-black/55"
-                      aria-hidden
-                    />
+                    <div className="absolute inset-0 z-[1] bg-black/55" aria-hidden />
 
-                    {/* Title + location: always visible on mobile, hover-only on md+ */}
-                    <div className="absolute inset-x-0 bottom-0 z-[2] translate-y-0 p-5 !opacity-100 transition-all duration-500 ease-out md:translate-y-3 md:!opacity-0 md:group-hover:translate-y-0 md:group-hover:!opacity-100">
-                      <h2 className="!text-white text-lg font-bold uppercase leading-snug drop-shadow-md md:text-xl">
+                    <div className="absolute inset-x-0 bottom-0 z-[2] p-5">
+                      <h2 className="text-lg font-bold uppercase leading-snug text-white drop-shadow-md md:text-xl">
                         {project.title}
                       </h2>
-                      {project.location ? (
-                        <p className="mt-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide !text-white/90 drop-shadow">
-                          <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden />
-                          {project.location}
+                      {project.client ? (
+                        <p className="mt-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-white/90 drop-shadow">
+                          <Building2 className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden />
+                          {project.client}
                         </p>
                       ) : null}
                     </div>

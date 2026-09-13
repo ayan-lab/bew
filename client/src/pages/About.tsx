@@ -1,10 +1,11 @@
-import { Shield, Target, Users, Award, MapPin, ArrowRight } from "lucide-react";
+import { Shield, Target, Users, Award, MapPin, ArrowRight, MoveUpRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { apiUrl } from "@/lib/api";
 import { type Client } from "@/types/api";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { Reveal } from "@/components/Reveal";
+import CountUp from "@/components/CountUp";
 
 export default function About() {
   usePageMeta({
@@ -36,7 +37,13 @@ export default function About() {
         <div className="container mx-auto px-4 py-16 text-center md:px-8">
           <Reveal y={24}>
             <h1 className="mb-4 text-4xl font-bold uppercase">
-              Building Trust Through <span className="text-primary">Excellence</span>
+              Building Trust Through{" "}
+              <span
+                className="italic text-2xl font-bold normal-case leading-[1.08] text-primary sm:text-2xl md:text-5xl lg:text-[3.5rem]"
+                style={{ fontFamily: "'Instrument Serif', Georgia, serif", letterSpacing: "0.04em" }}
+              >
+                Excellence
+              </span>
             </h1>
             <p className="mx-auto max-w-2xl text-lg text-hero-foreground/65">
               Baidya Engineering Works has supported industrial progress in West Bengal since
@@ -85,13 +92,33 @@ export default function About() {
             </p>
             <div className="mt-8 grid grid-cols-2 gap-6">
               <div className="border border-border bg-muted p-6 text-center">
-                <div className="mb-2 text-4xl font-bold text-primary">20+</div>
+                <div className="mb-2 text-4xl font-bold text-primary">
+                  <CountUp
+                    from={0}
+                    to={Number(20)}
+                    direction="up"
+                    duration={1.5}
+                    className="count-up-text"
+                    delay={0}
+                  />
+                  <span className="text-primary">+</span>
+                  </div>
                 <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   Years Experience
                 </div>
               </div>
               <div className="border border-border bg-muted p-6 text-center">
-                <div className="mb-2 text-4xl font-bold text-primary">500+</div>
+                <div className="mb-2 text-4xl font-bold text-primary">
+                <CountUp
+                    from={0}
+                    to={Number(500)}
+                    direction="up"
+                    duration={1.5}
+                    className="count-up-text"
+                    delay={0}
+                  />
+                  <span className="text-primary">+</span>
+                  </div>
                 <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   Projects Completed
                 </div>
@@ -205,7 +232,7 @@ export default function About() {
           </p>
           <Link href="/contact">
             <span className="inline-flex cursor-pointer items-center bg-primary px-7 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground hover:bg-primary/90">
-              Contact our team <ArrowRight className="ml-2 h-4 w-4" />
+              start a conversation <MoveUpRight className="ml-2 h-4 w-4" />
             </span>
           </Link>
         </Reveal>
