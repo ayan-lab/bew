@@ -383,6 +383,21 @@ export async function registerRoutes(
     return res.status(200).json({ message: "Projects cache invalidated" });
   });
 
+  app.get("/api/health", async (req, res) => {
+      try {
+          return res.status(200).json({
+              status: "ok",
+              message: "Server is healthy"
+          });
+      } catch (err) {
+          return res.status(500).json({
+              message: "Internal server error"
+          });
+      }
+  });
+
+
+
   return httpServer;
 }
 
