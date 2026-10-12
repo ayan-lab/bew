@@ -11,7 +11,7 @@ const SERVICE_PREFIX = /^\[Service:\s*(.+?)\]\s*\n*/i;
 /**
  * @param {{ name: string, email: string, message: string, serviceType?: string | null }} enquiry
  */
-function parseEnquiry(enquiry) {
+function parseEnquiry(enquiry: { name: string, email: string, message: string, serviceType?: string | null }) {
   const name = enquiry.name?.trim() || "Unknown";
   const email = enquiry.email?.trim() || "Unknown";
   let serviceType = enquiry.serviceType?.trim() || "";
@@ -39,7 +39,7 @@ function parseEnquiry(enquiry) {
  *
  * @param {{ name: string, email: string, message: string, serviceType?: string | null }} enquiry
  */
-export async function sendEnquiryEmail(enquiry) {
+export async function sendEnquiryEmail(enquiry: { name: string, email: string, message: string, serviceType?: string | null }) {
   const apiKey = process.env.SENDING_KEY;
   const templateId = process.env.TEMPLATE_ID;
   const fromAddress = requireFromAddress();
@@ -82,7 +82,7 @@ function requireFromAddress() {
   return fromAddress;
 }
 
-function ratingStars(rating) {
+function ratingStars(rating: number) {
   const n = Math.min(5, Math.max(0, Number(rating) || 0));
   return `${"★".repeat(n)}${"☆".repeat(5 - n)}`;
 }
@@ -101,7 +101,7 @@ function ratingStars(rating) {
  *   declineUrl: string,
  * }} review
  */
-export async function sendReviewRequestEmail(review) {
+export async function sendReviewRequestEmail(review: { projectTitle: string, firstName: string, lastName: string, rating: number, message: string, approveUrl: string, declineUrl: string }) {
   const apiKey = process.env.SENDING_KEY;
   const templateId = process.env.REVIEW_TEMPLATE_ID;
   const fromAddress = requireFromAddress();
