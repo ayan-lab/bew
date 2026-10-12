@@ -18,9 +18,7 @@ const WHATSAPP_CHAT_URL =
   encodeURIComponent("Hi, I'd like to inquire about Baidya Engineering Works.");
 
 /** PNG + preserve alpha so the bar/video shows through non-logo pixels (not flattened to white). */
-const LOGO_URL =
-  "https://res.cloudinary.com/dqhnt5mus/image/upload/f_png,q_auto,fl_preserve_transparency/v1777807947/logo_1_y0ki0y.png";
-  // "https://res.cloudinary.com/dqhnt5mus/image/upload/v1777788291/logo_gdyzwx.png"
+const LOGO_URL = "https://res.cloudinary.com/dqhnt5mus/image/upload/v1777807947/logo_1_y0ki0y.png"
 
 function WhatsAppCta({
   className,
