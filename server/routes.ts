@@ -17,7 +17,7 @@ import {
   type ReviewAction,
 } from "./email/review-action-token";
 
-import { cacheDeleteJson, cacheGetJson, cacheSetJson } from "./cache/redis_cache.ts";
+import { cacheDeleteJson, cacheGetJson, cacheSetJson } from "./cache/redis_cache";
 
 const profileUpload = multer({
   storage: multer.memoryStorage(),
@@ -117,8 +117,7 @@ export async function registerRoutes(
       await cacheSetJson("projects", rows);
       return res.status(200).json(rows);
     } catch (err) {
-      console.error("Projects error:", err);
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: `Internal server error : ${err}` });
     }
   });
 
@@ -140,8 +139,7 @@ export async function registerRoutes(
       await cacheSetJson(`project_${id}`, rows[0]);
       return res.status(200).json(rows[0]);
     } catch (err) {
-      console.error("Project detail error:", err);
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: `Internal server error ${err}` });
     }
   });
 
@@ -229,8 +227,8 @@ export async function registerRoutes(
       await cacheSetJson("clients", rows);
       return res.status(200).json(rows);
     } catch (err) {
-      console.error("Clients error:", err);
-      return res.status(500).json({ message: "Internal server error" });
+      
+      return res.status(500).json({ message: `Internal server error: ${err}` });
     }
   });
 
@@ -373,7 +371,7 @@ export async function registerRoutes(
       await cacheSetJson("services", rows);
       return res.status(200).json(rows);
     } catch (err) {
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: `Internal server error : ${err}` });
     }
   });
 
