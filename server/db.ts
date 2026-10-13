@@ -2,7 +2,7 @@ import { createRequire } from "node:module";
 import { config } from "dotenv";
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
-import * as schema from "./shared/schema";
+import * as schema from "./shared/schema.js";
 
 const require = createRequire(import.meta.url);
 const { parse } = require("pg-connection-string") as typeof import("pg-connection-string");
