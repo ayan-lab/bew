@@ -1,4 +1,4 @@
-import { db } from "./db.js";
+import { db } from "./db";
 import {
   contactSubmissions,
   RequestedReviews,
@@ -6,7 +6,7 @@ import {
   user,
   type InsertContactSubmission,
   type ContactSubmission,
-} from "./shared/schema.js";
+} from "./shared/schema";
 import { eq } from "drizzle-orm";
 
 export interface IStorage {
