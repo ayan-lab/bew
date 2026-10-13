@@ -1,23 +1,23 @@
 import type { Express, NextFunction, Request, Response } from "express";
 import type { Server } from "http";
 import multer from "multer";
-import { storage } from "./storage";
-import { api } from "./shared/routes";
+import { storage } from "./storage.js";
+import { api } from "./shared/routes.js";
 import { z } from "zod";
-import { project as projectsTable, client as clientsTable, services } from "./shared/schema";
-import { reviews as reviewsTable } from "./shared/schema";
-import { user as usersTable } from "./shared/schema";
-import { db } from "./db";
+import { project as projectsTable, client as clientsTable, services } from "./shared/schema.js";
+import { reviews as reviewsTable } from "./shared/schema.js";
+import { user as usersTable } from "./shared/schema.js";
+import { db } from "./db.js";
 import { eq } from "drizzle-orm";
-import { uploadProfileImage } from "./cloudinary-upload";
-import { sendEnquiryEmail, sendReviewRequestEmail } from "./email/maileroo";
+import { uploadProfileImage } from "./cloudinary-upload.js";
+import { sendEnquiryEmail, sendReviewRequestEmail } from "./email/maileroo.js";
 import {
   buildReviewActionUrl,
   verifyReviewActionToken,
   type ReviewAction,
-} from "./email/review-action-token";
+} from "./email/review-action-token.js";
 
-import { cacheDeleteJson, cacheGetJson, cacheSetJson } from "./cache/redis_cache";
+import { cacheDeleteJson, cacheGetJson, cacheSetJson } from "./cache/redis_cache.js";
 
 const profileUpload = multer({
   storage: multer.memoryStorage(),

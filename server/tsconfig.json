@@ -3,13 +3,13 @@
   "exclude": ["node_modules", "migrations"],
   "compilerOptions": {
     "noEmit": true,
-    "module": "ESNext",
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "strict": true,
     "lib": ["esnext"],
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "bundler",
-    "ignoreDeprecations": "6.0",
     "types": ["node"]
   }
 }
