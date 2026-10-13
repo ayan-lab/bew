@@ -13,43 +13,9 @@ const links = [
 ];
 
 /** Opens WhatsApp chat (same number as Contact / Footer). */
-const WHATSAPP_CHAT_URL =
-  "https://wa.me/919874751736?text=" +
-  encodeURIComponent("Hi, I'd like to inquire about Baidya Engineering Works.");
 
 /** PNG + preserve alpha so the bar/video shows through non-logo pixels (not flattened to white). */
 const LOGO_URL = "https://res.cloudinary.com/dqhnt5mus/image/upload/v1777807947/logo_1_y0ki0y.png"
-
-function WhatsAppCta({
-  className,
-  onClick,
-}: {
-  className?: string;
-  onClick?: () => void;
-}) {
-  return (
-    <a
-      href={WHATSAPP_CHAT_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Chat on WhatsApp"
-      onClick={onClick}
-      className={cn(
-        "relative isolate inline-flex items-center overflow-hidden bg-whatsapp-cta px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white shadow-md shadow-emerald-950/25 transition-[transform,box-shadow] duration-200 hover:scale-[1.03] hover:shadow-lg hover:shadow-emerald-900/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-        className,
-      )}
-    >
-      <span
-        className="pointer-events-none absolute inset-0 z-0 skew-x-[-16deg] animate-whatsapp-shine bg-gradient-to-r from-transparent via-white/40 to-transparent"
-        aria-hidden
-      />
-      <span className="relative z-10 inline-flex items-center gap-2 drop-shadow-sm">
-        <FaWhatsapp className="h-4 w-4 shrink-0 text-white" aria-hidden />
-        <span className="hidden leading-none min-[380px]:inline">WhatsApp</span>
-      </span>
-    </a>
-  );
-}
 
 export function Navbar() {
   const [location] = useLocation();
@@ -126,12 +92,9 @@ export function Navbar() {
               ))}
             </nav>
 
-            <div className="hidden justify-self-end lg:block">
-              <WhatsAppCta />
-            </div>
 
             <div className="flex items-center justify-end gap-2 lg:hidden">
-              <WhatsAppCta className="px-3 py-2" />
+             
               <button
                 type="button"
                 className="p-1.5 text-foreground"
