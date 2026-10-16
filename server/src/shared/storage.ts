@@ -6,7 +6,8 @@ import {
   user,
   type InsertContactSubmission,
   type ContactSubmission,
-} from "./shared/schema.js";
+  User,
+} from "./schema.js";
 import { eq } from "drizzle-orm";
 
 export interface IStorage {
@@ -19,7 +20,7 @@ export interface IStorage {
     rating: number;
     comment: string;
   }): Promise<{ id: number; uuid: string }>;
-  approveRequestedReview(uuid: string): Promise<"approved" | "not_found">;
+  approveRequestedReview(uuid: string, userId: string): Promise<"approved" | "not_found">;
   declineRequestedReview(uuid: string): Promise<"declined" | "not_found">;
 }
 
@@ -52,7 +53,7 @@ export class DatabaseStorage implements IStorage {
     return { id: row.id, uuid: row.uuid };
   }
 
-  async approveRequestedReview(uuid: string): Promise<"approved" | "not_found"> {
+  async approveRequestedReview(uuid: string, userId: string): Promise<"approved" | "not_found"> {
     return db.transaction(async (tx) => {
       const [requested] = await tx
         .select()
@@ -64,17 +65,8 @@ export class DatabaseStorage implements IStorage {
         return "not_found";
       }
 
-      const [createdUser] = await tx
-        .insert(user)
-        .values({
-          firstName: requested.firstName,
-          lastName: requested.lastName ?? "",
-          profilePicture: requested.profilePicture,
-        })
-        .returning({ id: user.id });
-
       await tx.insert(reviews).values({
-        userId: createdUser.id,
+        userId: parseInt(userId, 10),
         projectId: requested.projectId,
         rating: requested.rating,
         comment: requested.comment,
@@ -93,6 +85,24 @@ export class DatabaseStorage implements IStorage {
       .returning({ id: RequestedReviews.id });
 
     return deleted.length > 0 ? "declined" : "not_found";
+  }
+
+  async createUser(input: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    passwordHash: string;
+  }): Promise<User> {
+    const [row] = await db.insert(user).values(input).returning();
+    return row;
+  }
+
+  async getUserByEmail(email: string): Promise<User | null> {
+    const [row] = await db.select().from(user).where(eq(user.email, email)).limit(1);
+    if(!row){
+      return null;
+    }
+    return row;
   }
 }
 

@@ -40,7 +40,9 @@ export const user = pgTable("user", {
   id: serial("id").primaryKey(),
   uuid: uuid("uuid").notNull().defaultRandom(),
   firstName: varchar("first_name", { length: 100 }).notNull(),
-  lastName: varchar("last_name", { length: 100 }).notNull(),
+  lastName: varchar("last_name", { length: 100 }),
+  email: varchar("email", { length: 255 }).unique().notNull(),
+  passwordHash: varchar("password_hash", { length: 255 }).notNull(),
   profilePicture: varchar("profile_picture", { length: 255 }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -77,7 +79,6 @@ export const services = pgTable("services", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
-
 
 // Users can have many reviews
 export const userRelations = relations(user, ({ many }) => ({

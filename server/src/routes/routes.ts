@@ -1,23 +1,25 @@
-import type { Express, NextFunction, Request, Response } from "express";
+import type { Express, NextFunction, Request, RequestHandler, Response } from "express";
 import type { Server } from "http";
 import multer from "multer";
-import { storage } from "./storage.js";
-import { api } from "./shared/routes.js";
+import { storage } from "../shared/storage.js";
+import { api } from "../controller/routesController.js";
 import { z } from "zod";
-import { project as projectsTable, client as clientsTable, services } from "./shared/schema.js";
-import { reviews as reviewsTable } from "./shared/schema.js";
-import { user as usersTable } from "./shared/schema.js";
-import { db } from "./db.js";
+import { project as projectsTable, client as clientsTable, services } from "../shared/schema.js";
+import { reviews as reviewsTable } from "../shared/schema.js";
+import { user as usersTable } from "../shared/schema.js";
+import { db } from "../shared/db.js";
 import { eq } from "drizzle-orm";
-import { uploadProfileImage } from "./cloudinary-upload.js";
-import { sendEnquiryEmail, sendReviewRequestEmail } from "./email/maileroo.js";
+import { uploadProfileImage } from "../integrations/cloudinary/cloudinary-upload.js";
+import { sendEnquiryEmail, sendReviewRequestEmail } from "../email/maileroo.js";
 import {
   buildReviewActionUrl,
   verifyReviewActionToken,
   type ReviewAction,
-} from "./email/review-action-token.js";
+} from "../email/review-action-token.js";
 
-import { cacheDeleteJson, cacheGetJson, cacheSetJson } from "./cache/redis_cache.js";
+import { cacheDeleteJson, cacheGetJson, cacheSetJson } from "../cache/redis_cache.js";
+import { authenticate } from "../middleware/authenticate.js";
+import { registerUser, loginUser } from "../controller/user_controller.js";
 
 const profileUpload = multer({
   storage: multer.memoryStorage(),
@@ -27,6 +29,35 @@ const profileUpload = multer({
       cb(null, true);
     } else {
       cb(new Error("Only JPEG, PNG, WebP, or GIF images are allowed."));
+    }
+  },
+});
+
+const projectFileUpload = multer({
+  storage: multer.memoryStorage(),
+
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10 MB
+  },
+
+  fileFilter: (_req, file, cb) => {
+    const allowedMimeTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/acad",
+      "application/x-acad",
+      "application/autocad_dwg",
+      "image/vnd.dwg",
+      "application/octet-stream",
+    ];
+
+    if (allowedMimeTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(
+        new Error("Only PDF, DOC, DOCX, or DWG files are allowed.")
+      );
     }
   },
 });
@@ -43,6 +74,20 @@ function handleProfileUpload(req: Request, res: Response, next: NextFunction) {
     next();
   });
 }
+
+function handleProjectFileUpload(req: Request, res: Response, next: NextFunction) {
+  projectFileUpload.single("projectFile")(req, res, (err?: unknown) => {
+    if (err) {
+      if (err instanceof multer.MulterError && err.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({ message: "File must be 10MB or smaller." });
+      }
+      const message = err instanceof Error ? err.message : "Invalid file upload.";
+      return res.status(400).json({ message });
+    }
+    next();
+  });
+}
+
 
 const createProjectReviewBodySchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -146,6 +191,7 @@ export async function registerRoutes(
   app.post(
     "/api/projects/:id/reviews",
     handleProfileUpload,
+    authenticate,
     async (req, res) => {
       const projectId = Number.parseInt(req.params.id, 10);
       if (Number.isNaN(projectId)) {
@@ -232,7 +278,7 @@ export async function registerRoutes(
     }
   });
 
-  app.get("/api/reviews/requests/:uuid/:action", async (req, res) => {
+  app.get("/api/reviews/requests/:uuid/:action", authenticate as unknown as RequestHandler, async (req, res) => {
     const uuid = req.params.uuid?.trim();
     const action = req.params.action as ReviewAction;
     const token = typeof req.query.token === "string" ? req.query.token : undefined;
@@ -266,7 +312,7 @@ export async function registerRoutes(
       }
 
       if (action === "approve") {
-        const outcome = await storage.approveRequestedReview(uuid);
+        const outcome = await storage.approveRequestedReview(uuid, (authenticate as any).user.id);
         if (outcome === "not_found") {
           return res
             .status(404)
@@ -380,6 +426,21 @@ export async function registerRoutes(
     console.log("Projects cache invalidated");
     return res.status(200).json({ message: "Projects cache invalidated" });
   });
+
+
+  app.post("/register", registerUser)
+  app.post("/login", loginUser)
+
+
+  // app.post("/api/projects/estimate", authenticate as unknown as RequestHandler, handleProjectFileUpload, async(req, res) => {
+  //     try{
+
+
+  //     }catch(err){
+  //       return res.status(500).json({ message: "Internal server error" });
+  //     }
+
+  // })
 
   app.get("/api/health", async (req, res) => {
       try {
