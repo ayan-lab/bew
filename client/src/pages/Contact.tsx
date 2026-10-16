@@ -29,7 +29,7 @@ export default function Contact() {
   usePageMeta({
     title: "Contact Us — Get a Quote",
     description:
-      "Contact Baidya Engineering Works in Chikrand, West Bengal. Call +91 987 475 1736 or request a quote for industrial utilities, PEB, pipelines, and plant maintenance.",
+      "Contact Baidya Engineering Works in Chikrand, West Bengal. Call +91 987 475 1736 or get in touch with us for industrial utilities, PEB, pipelines, and plant maintenance.",
     path: "/contact",
   });
 
@@ -68,7 +68,7 @@ export default function Contact() {
           <Reveal y={24}>
             <h1 className="mb-4 text-4xl font-bold uppercase">Get In Touch</h1>
             <p className="mx-auto max-w-2xl text-lg text-hero-foreground/65">
-              Request a quote for utilities, PEB, pipelines, or plant maintenance — or call us
+              Get in touch for utilities, PEB, pipelines, or plant maintenance — or call us
               directly. We respond during business hours from Chikrand, West Bengal.
             </p>
           </Reveal>
@@ -172,7 +172,7 @@ export default function Contact() {
 
           <div className="p-10">
             <h2 className="mb-2 text-2xl font-bold uppercase text-foreground">
-              Request a quote
+              Get in touch
             </h2>
             <p className="mb-6 text-sm text-muted-foreground">
               Include location, approximate scope, and any drawings or photos you can share.
